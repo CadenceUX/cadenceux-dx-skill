@@ -1,0 +1,23 @@
+{
+  "name": "cadenceux-dx",
+  "displayName": "CadenceUX DX",
+  "version": "1.0.0",
+  "description": "The developer experience for agentic Claris FileMaker work, with or without Claris's Agentic Development Kit (ADK): routes each task to the skill or ADK tool that owns it, checks the stack is current, and guides the decisions around the code (native or web viewer, data access, FileMaker 26.0.3 and earlier, reviews, linter tests, security and deployment).",
+  "author": {
+    "name": "Darrin Southern",
+    "url": "https://cadenceux.com.au"
+  },
+  "homepage": "https://github.com/CadenceUX/cadenceux-dx-skill",
+  "repository": "https://github.com/CadenceUX/cadenceux-dx-skill",
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "filemaker",
+    "claris",
+    "adk",
+    "routing",
+    "developer-experience"
+  ],
+  "skills": [
+    "./"
+  ]
+}
