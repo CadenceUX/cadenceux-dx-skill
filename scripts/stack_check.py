@@ -24,7 +24,12 @@ import urllib.request
 VERSIONS_URL = "https://raw.githubusercontent.com/CadenceUX/cadenceux-skills/main/versions.json"
 FEED_FALLBACK = "https://www.claris.com/cms/resources/downloads/updaters/product-updaters.txt"
 HOME = os.path.expanduser("~")
-ADK_HOME = os.path.join(HOME, "Library", "Application Support", "ADK")
+# Where Claris's ADK installs: ~/Library/Application Support/ADK on macOS,
+# %LOCALAPPDATA%\ADK on 64-bit Windows (supported since ADK 0.17.0).
+if os.name == "nt":
+    ADK_HOME = os.path.join(os.environ.get("LOCALAPPDATA", os.path.join(HOME, "AppData", "Local")), "ADK")
+else:
+    ADK_HOME = os.path.join(HOME, "Library", "Application Support", "ADK")
 
 
 # ---------- helpers ----------
@@ -183,7 +188,7 @@ FMS_MINIMUM = "26.1.1"    # files hosted on FileMaker Server need 26.1.1 or late
 
 
 def find_adk():
-    cands = [shutil.which("adk"), os.path.join(ADK_HOME, "bin", "adk")]
+    cands = [shutil.which("adk"), os.path.join(ADK_HOME, "bin", "adk.exe" if os.name == "nt" else "adk")]
     for c in cands:
         if c and os.path.isfile(c):
             return c

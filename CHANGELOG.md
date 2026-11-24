@@ -1,5 +1,24 @@
 # cadenceux-dx — Changelog
 
+## [1.0.1] — 2026-11-24
+
+Claris's FileMaker Agentic Development Kit (ADK) 0.17.0, which adds 64-bit Windows.
+
+### Fixed
+
+- `scripts/stack_check.py` looked for ADK only in its macOS folder, so on Windows it reported
+  ADK as not installed unless `adk` was on PATH. It now looks in `%LOCALAPPDATA%\ADK\bin\adk.exe`
+  on Windows. FileMaker Pro's version still can't be read on Windows; the check says so and how
+  to find it, as before.
+
+### Verified
+
+- Stack check run against ADK 0.17.0 (build 60) on macOS: ADK, plugin, MCP server and standards
+  pack all read correctly. The Windows path checked by loading the script with Windows settings;
+  not run on a Windows machine.
+- Every ADK command the guides name is still in `adk --help` for 0.17.0.
+- `validate_skill.py` clean.
+
 ## [1.0.0] — 2026-11-19
 
 First release, using `cadenceux-skill-creator` 2.4.2. Replaces `fmp-dev-orchestrator` (2.1.3),

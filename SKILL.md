@@ -17,7 +17,7 @@ compatibility: >-
   full stack check needs Python 3 and a shell; without one it checks skill versions only.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # CadenceUX DX
@@ -35,7 +35,7 @@ questions (syntax, plug-in functions) from training data.
 | CLI | `python3` | `scripts/stack_check.py` | Claude Code or any harness with a shell |
 | CLI | `adk`, `filemaker` (ADK, optional) | ADK health, standards and project checks | Any harness with a shell |
 | API | `raw.githubusercontent.com`, `downloads.claris.com`, `www.claris.com` (public, no key) | `versions.json`, Claris's ADK manifest, Claris's updates feed | Any surface that can fetch |
-| Path | `~/.claude/plugins`, the Claude app's data folder, `~/Library/Application Support/ADK` | Finding installed skills and ADK | Claude Code |
+| Path | `~/.claude/plugins`, the Claude app's data folder, ADK's folder (`~/Library/Application Support/ADK` on macOS, `%LOCALAPPDATA%\ADK` on Windows) | Finding installed skills and ADK | Claude Code |
 
 ## Step 0: stack check (once per session)
 
@@ -149,7 +149,7 @@ End every answer routed through this skill with:
 
 The stack check covers this skill: it reports the running copy against `versions.json`. With no
 shell, fetch `https://github.com/CadenceUX/cadenceux-dx-skill/raw/main/VERSION` once per session
-and, if it's newer than 1.0.0, start the answer with:
+and, if it's newer than 1.0.1, start the answer with:
 
 > ⚠️ **Skill update available:** this skill is v[installed]; v[latest] is at
 > https://github.com/CadenceUX/cadenceux-dx-skill/releases
