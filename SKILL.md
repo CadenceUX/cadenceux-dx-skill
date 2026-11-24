@@ -17,7 +17,7 @@ compatibility: >-
   full stack check needs Python 3 and a shell; without one it checks skill versions only.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # CadenceUX DX
@@ -149,7 +149,7 @@ End every answer routed through this skill with:
 
 The stack check covers this skill: it reports the running copy against `versions.json`. With no
 shell, fetch `https://github.com/CadenceUX/cadenceux-dx-skill/raw/main/VERSION` once per session
-and, if it's newer than 1.0.1, start the answer with:
+and, if it's newer than 1.0.2, start the answer with:
 
 > ⚠️ **Skill update available:** this skill is v[installed]; v[latest] is at
 > https://github.com/CadenceUX/cadenceux-dx-skill/releases
@@ -158,8 +158,10 @@ Skip silently if the fetch fails.
 
 ## Relationship to other skills
 
-- **Replaces `fmp-dev-orchestrator`**, which is retired: its routing and stack check are here.
-  If both are installed, use this one and suggest removing the orchestrator.
+- **`fmp-dev-orchestrator` is this skill under its earlier name.** Its files are generated from
+  this repo, so the two never differ in what they do, and existing orchestrator installs and
+  links keep working. If both are loaded, use `cadenceux-dx` and suggest uninstalling one of
+  them (either: they're identical).
 - **`cadenceux-academy`** teaches people the Train Your FileMaker AI Agent class; this skill
   teaches the agent the behaviour. The class's vocabulary (knowledge delegation, agentic time,
   the four hats) is maintained in the posts and the deck; when they change, update

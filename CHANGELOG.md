@@ -1,5 +1,34 @@
 # cadenceux-dx — Changelog
 
+## [1.0.2] — 2026-11-24
+
+`fmp-dev-orchestrator` returns as this skill under its earlier name, built from this repo.
+
+### Added
+
+- `maintainer/build_orchestrator.py` writes `fmp-dev-orchestrator` (3.0.2 for this release:
+  this version with the major number plus 2) from this repo's SKILL.md, `references/`,
+  `scripts/` and evals. It changes only the name, version, self-check links and the
+  relationship note, and stops if any of those no longer match.
+
+### Changed
+
+- "Relationship to other skills", the README and `references/stack-check.md` call
+  `fmp-dev-orchestrator` this skill's earlier name rather than a retired one. If both are
+  loaded, use `cadenceux-dx` and suggest uninstalling either.
+- `scripts/stack_check.py` reads `same_as` in `versions.json`: when both names are installed it
+  notes "same skill as …: keep one", and neither is listed as not installed while the other is.
+- Eval case `retired-orchestrator` replaced by `orchestrator-same-skill`.
+
+### Verified
+
+- Evals: `orchestrator-same-skill` passes on Haiku, Sonnet and Opus for both cadenceux-dx 1.0.2
+  and fmp-dev-orchestrator 3.0.2 (the released versions fail it on Sonnet), and the orchestrator
+  copy passes `add-field-adk` on all three; see `evals/results-2026-11-24-v1.0.2.md`.
+- Stack check run on macOS against the new `versions.json`; the both, one and neither cases
+  tested.
+- `validate_skill.py` clean on both; `cadenceux-github` scanners clean.
+
 ## [1.0.1] — 2026-11-24
 
 Claris's FileMaker Agentic Development Kit (ADK) 0.17.0, which adds 64-bit Windows.

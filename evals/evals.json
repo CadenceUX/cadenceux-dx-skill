@@ -1,6 +1,6 @@
 {
   "skill": "cadenceux-dx",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "notes": "Each case is answered in a fresh subagent with the skill folder only (no evals/), text only. Graded against must / must_not. Baseline: fmp-dev-orchestrator 2.1.3.",
   "cases": [
     {
@@ -40,15 +40,16 @@
       ]
     },
     {
-      "id": "retired-orchestrator",
+      "id": "orchestrator-same-skill",
       "mode": "adk",
-      "prompt": "The stack check says fmp-dev-orchestrator is REMOVE. Do I still need it?",
+      "prompt": "I've got both fmp-dev-orchestrator and cadenceux-dx installed. Do I need both?",
       "must": [
-        "says cadenceux-dx replaces it",
-        "suggests removing the orchestrator"
+        "says they're the same skill under two names",
+        "suggests keeping one and uninstalling the other"
       ],
       "must_not": [
-        "says to keep both"
+        "says fmp-dev-orchestrator is retired",
+        "says the two do different things"
       ]
     },
     {

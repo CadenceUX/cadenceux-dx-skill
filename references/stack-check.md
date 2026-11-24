@@ -51,11 +51,13 @@ In claude.ai chat or any host with no code execution:
 for plugin installs, or upload the new release `.zip` (Customize → Skills) for the Claude
 desktop app and claude.ai. The desktop app keeps a copy of each uploaded skill per session, so
 several old copies are normal; the newest is the one in use. `REMOVE` means a skill on the
-`retired` list (`fmp-dev-orchestrator`, which this skill replaces, and the clipboard XML
-skills): suggest removing it, with the reason from the list: `claude plugin uninstall <name>@cadenceux`
+`retired` list (such as the clipboard XML skills): suggest removing it, with the reason from the list: `claude plugin uninstall <name>@cadenceux`
 for a plugin install, or delete it under Customize → Skills in the desktop app and claude.ai.
 Ask first. `OUTSIDE SET` means a skill on the
 `outside_set` list: not CadenceUX's and not replaced by ADK. Mention it once.
+*Same skill as …* means both `cadenceux-dx` and `fmp-dev-orchestrator`
+are installed: they're one skill under two names, so suggest uninstalling either. Only one is
+needed, so the other isn't listed as not installed.
 `cadenceux-filemaker-standards` is a plugin with no skill: it's the `cadenceux` standards pack.
 
 **Claris ADK.** The installed version (`adk --version`) is compared with Claris's ADK manifest.

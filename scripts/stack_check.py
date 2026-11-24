@@ -151,8 +151,17 @@ def check_skills(versions, wanted):
     latest.update(versions.get("separate_installs", {}))
     outside = versions.get("outside_set", {})
     found = installed_skills(set(latest) | set(versions.get("retired", {})) | set(outside))
+    # "same_as": one skill published under two names (fmp-dev-orchestrator is cadenceux-dx's
+    # earlier name). Only one is needed, so neither is listed as missing while the other is
+    # installed, and both being installed gets a note.
+    twin = {}
+    for n, d in latest.items():
+        if isinstance(d, dict) and d.get("same_as"):
+            twin[n], twin[d["same_as"]] = d["same_as"], n
     for name in sorted(set(latest) | set(found)):
         copies = found.get(name, [])
+        if not copies and name in twin and (found.get(twin[name]) or latest.get(name, {}).get("same_as")):
+            continue
         if name in outside:
             if copies:
                 rows.append({"item": name, "status": "OUTSIDE SET", "installed": sorted({c["version"] or "?" for c in copies}),
@@ -177,6 +186,8 @@ def check_skills(versions, wanted):
             n = sum(1 for x in copies if x["where"] == where)
             rows.append({"item": name, "where": where, "installed": c["version"], "latest": want, "status": status,
                          "copies": n, "versions_seen": sorted({x["version"] or "?" for x in copies if x["where"] == where})})
+            if name in twin and found.get(twin[name]):
+                rows[-1]["note"] = f"same skill as {twin[name]}, which is also installed: keep one"
     return rows
 
 
@@ -430,7 +441,8 @@ def main():
         else:
             extra = (f"; {r['copies']} copies, versions seen {', '.join(r['versions_seen'])} (the newest copy is shown)"
                      if r["copies"] > 1 else "")
-            p(f"- {r['item']} [{r['where']}]: {r['installed']} vs latest {r['latest']} -> {r['status']}{extra}")
+            note = f" ({r['note']})" if r.get("note") else ""
+            p(f"- {r['item']} [{r['where']}]: {r['installed']} vs latest {r['latest']} -> {r['status']}{extra}{note}")
     ad = report["adk"]
     p("\n## Claris ADK")
     if ad.get("status") == "NOT FOUND":

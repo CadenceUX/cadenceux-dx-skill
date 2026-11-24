@@ -5,7 +5,8 @@ for the developer experience of agentic Claris FileMaker work, with or without C
 FileMaker Agentic Development Kit (ADK). It routes each task to the skill or tool that owns it,
 checks your stack is current, and guides the decisions around the code.
 
-Replaces `fmp-dev-orchestrator`, which is retired.
+Also published as [`fmp-dev-orchestrator`](https://github.com/CadenceUX/fmp-dev-orchestrator-skill),
+its earlier name: the same skill, built from this repo. Install one, not both.
 
 Built and maintained by [Darrin Southern](https://www.linkedin.com/in/darrin-southern/) from [CadenceUX](https://cadenceux.com.au).
 
@@ -52,7 +53,7 @@ claude plugin marketplace add https://github.com/CadenceUX/cadenceux-skills.git
 claude plugin install cadenceux-dx@cadenceux
 ```
 
-If `fmp-dev-orchestrator` is installed, remove it: `claude plugin uninstall fmp-dev-orchestrator`.
+If `fmp-dev-orchestrator` is also installed, keep one: they're the same skill.
 
 **claude.ai and Cowork:** Customize → Plugins → Add marketplace from GitHub →
 `CadenceUX/cadenceux-skills`, then install **cadenceux-dx**.
