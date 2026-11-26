@@ -4,96 +4,52 @@ description: >-
   Directs agentic Claris FileMaker work, with or without Claris's Agentic Development Kit
   (ADK), with the Developer as Orchestrator: the next stage of each agile sprint (needs
   analysis, sprint planning, solution design, implementation, QA testing, review and optimise,
-  deploy), the thinking hats it calls and the gate it must pass. Routes each task to the
-  CadenceUX skill or ADK tool that owns it, checks the stack is current, and guides the
-  decisions around the code: native or web viewer, data access, FileMaker 26.0.3 and earlier,
-  system reviews, linter tests, security and deployment. Use when starting, planning,
-  estimating, handing back, reviewing or deploying FileMaker work, when unsure which skill or
-  tool owns a task, or when asked if the stack is current. Not for syntax, plug-in or
-  convention questions; it hands those to the owning skill.
+  deploy), the thinking hats it calls and the gate it must pass before it moves on or deploys.
+  Guides the decisions around the code: native or web viewer, data access, FileMaker 26.0.3 and
+  earlier, system reviews, linter tests, security and deployment. Use when starting, planning,
+  estimating, handing back, reviewing or deploying FileMaker work, or for any of those
+  decisions. Not for choosing which skill or tool owns a task, or checking the stack is current
+  (fmp-dev-orchestrator does both), or for syntax, plug-in or convention questions.
 license: CC-BY-4.0
 compatibility: >-
-  Claude.ai, Claude Desktop, Cowork and Claude Code, and any harness that reads skills. The
-  full stack check needs Python 3 and a shell; without one it checks skill versions only.
+  Claude.ai, Claude Desktop, Cowork and Claude Code, and any harness that reads skills. Works
+  best alongside fmp-dev-orchestrator, which selects the skills and checks the stack.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "2.0.0"
+  version: "3.0.0"
 ---
 
 # CadenceUX Developer Experience
 
 The developer experience for agentic FileMaker work. It's the Orchestrator's skill: it directs
 the Developer (the person) and the Agent through agile sprints, calling each stage, the
-thinking it needs and the gate it must pass; routes each task to the skill or tool that owns
-it; keeps the stack current; and carries the judgement the other skills don't: which approach
-to take, how to review, and how the Developer's time is spent now that the Agent does more of
-the building. Load the owning skill for the answer itself; never answer catalog
-questions (syntax, plug-in functions) from training data.
+thinking it needs and the gate it must pass, and it carries the judgement around the code:
+which approach to take, how to review, and how the Developer's time is spent now that the Agent
+does more of the building. Which skill or tool owns each task, and whether the stack is
+current, is `fmp-dev-orchestrator`'s job.
 
 ## Requirements
 
 | Kind | Name | Used for | Surfaces |
 |---|---|---|---|
-| CLI | `python3` | `scripts/stack_check.py` | Claude Code or any harness with a shell |
-| CLI | `adk`, `filemaker` (ADK, optional) | ADK health, standards and project checks | Any harness with a shell |
-| API | `raw.githubusercontent.com`, `downloads.claris.com`, `www.claris.com` (public, no key) | `versions.json`, Claris's ADK manifest, Claris's updates feed | Any surface that can fetch |
-| Path | `~/.claude/plugins`, the Claude app's data folder, ADK's folder (`~/Library/Application Support/ADK` on macOS, `%LOCALAPPDATA%\ADK` on Windows) | Finding installed skills and ADK | Claude Code |
+| Skill | `fmp-dev-orchestrator` (recommended) | Which skill or ADK tool owns a task; the stack check | Any |
+| CLI | `claude` | Installing `fmp-dev-orchestrator` from the `cadenceux` marketplace, on the user's yes | Claude Code |
+| API | `github.com` (public, no key) | This skill's update self-check | Any surface that can fetch |
 
-## Step 0: stack check (once per session)
+## Selecting skills and checking the stack
 
-On the first FileMaker task in a session, run the read-only stack check, then carry on:
+`fmp-dev-orchestrator` owns both. When a stage needs a skill or tool (which skill writes the
+script, which one checks the server), or someone asks whether the stack is current, load
+`fmp-dev-orchestrator` and follow it. Don't pick skills from memory. If it isn't installed, say
+so and give the install line:
 
 ```bash
-python3 <this skill's folder>/scripts/stack_check.py
+claude plugin marketplace add https://github.com/CadenceUX/cadenceux-skills.git
+claude plugin install fmp-dev-orchestrator@cadenceux
 ```
 
-It compares installed CadenceUX skills with `versions.json`, checks ADK against Claris's ADK
-manifest and `adk doctor`, FileMaker Pro against ADK's minimum (26.1) and Claris's public
-release, and the ADK project in the working folder (its standards pack and web viewer apps).
-Summarise in one or two lines unless something needs action; give the full report when asked
-"is my stack up to date". Never run an update, install or `adk components reconcile` without
-the user's yes. No shell: check skill versions only. Reading the results:
-[references/stack-check.md](references/stack-check.md).
-
-## Step 1: is ADK available?
-
-ADK is available when any of these is true: the session lists `filemaker-agentic-development:`
-skills (`fm-mcp-guide`, `filemaker-help`); MCP tools whose names contain `adk-mcp` are loaded (in
-any harness: Claude Code, Cursor, Codex, Gemini CLI); or `adk --version` runs.
-
-- **ADK available:** anything that reads or changes the FileMaker file goes through ADK: schema,
-  scripts, layouts and layout objects, value lists, custom functions, SQL against live data,
-  running scripts, standards. Never generate clipboard XML or copy-paste snippets for these.
-- **No ADK:** give the developer the steps, script text or calculation to enter by hand. ADK
-  needs FileMaker Pro 26.1 or later; for 26.0.3 and earlier, see
-  [references/before-adk.md](references/before-adk.md).
-
-## Step 2: route the task
-
-| Task | Owner |
-|---|---|
-| Reading or changing the file: schema, scripts, layouts, value lists, custom functions, live SQL, running scripts | **ADK** (`fm-mcp-guide`, `fm-cli`) |
-| ADK projects and web viewer apps | **ADK** (`adk-project-setup`, `adk-webviewer-app`) |
-| Which naming and design rules apply, and following a standards pack | **ADK** (`filemaker-standards`, `adk standards`) |
-| CadenceUX conventions, writing and reviewing scripts, a client's own standards | **`fmp-dev-design-patterns`** (with the `cadenceux` pack, `cadenceux-filemaker-standards@cadenceux`) |
-| Function and script step syntax, versions, platform support, FileMaker 26.1 additions, Data API, OData, ExecuteSQL, error codes | **`claris-filemaker-pro`** |
-| BaseElements (`BE_…`), MBS (`MBS ( "…" )`), bBox (`bBox_…`) functions | **`goya-be-plugin`**, **`monkeybread-mbs-plugin`**, **`beezwax-bbox-plugin`** |
-| FileMaker Server in Docker on macOS; OttoFMS on it | **`cadenceux-fms-docker-setup`**; **`cadenceux-ottofms-docker-setup`** |
-| Security check of a FileMaker Server: exposure, CVEs, accounts, logs, backups | **`cadenceux-fms-security`** |
-| GitHub: publishing skills, known attacks on accounts and repos, scanning skills before install | **`cadenceux-github`** |
-| Building or updating a Claude skill | **`cadenceux-skill-creator`** |
-| A hook or plugin that enforces a rule (such as hands off the referee) | **`cadenceux-plugin-creator`** |
-| Is the stack current | **This skill**, Step 0 |
-| Which approach to take, how to review, how to work (below) | **This skill** |
-| FileMaker Server administration beyond these, Admin API, Claris Connect, Claris Studio | No dedicated skill: fetch the live guide from `https://help.claris.com/` |
-
-For naming and conventions, ADK's `filemaker-standards` resolves which rules apply (Baseline,
-then the project's pack, then the project's own); `fmp-dev-design-patterns` supplies the
-`cadenceux` pack and how to write and review scripts to it. Change the file with ADK's tools as
-`fm-mcp-guide` describes, and `fm-cli` for schema and layout edits it routes there.
-
-For counts and versions, read the owning skill's `VERSION` and catalog `meta`, or
-`versions.json`; this table carries none.
+Whatever the stage, anything that reads or changes the FileMaker file goes through ADK when
+it's available, never clipboard XML or copy-paste snippets.
 
 ## Decisions this skill guides
 
@@ -240,20 +196,9 @@ has the detail and the reasons):
 - **Review again when the harness changes.** A new ADK, model or skill version is a new
   contractor: check its first piece of work before trusting the second.
 
-## Requests that span skills
-
-Load each owning skill in turn. Common combinations:
-
-- A script that calls a plug-in: `fmp-dev-design-patterns` for structure, the plug-in skill for
-  the function, `claris-filemaker-pro` for the steps, ADK to write it into the file.
-- A new server: `cadenceux-fms-docker-setup`, then `cadenceux-ottofms-docker-setup`, then
-  `cadenceux-fms-security`.
-- A web viewer app: [native-webviewer-hybrid.md](references/native-webviewer-hybrid.md) to
-  decide, then ADK's `adk-webviewer-app`, with `claris-filemaker-pro` for the scripts it calls.
-
 ## Disclosure
 
-End every answer routed through this skill with:
+End every answer that used this skill with:
 
 - **Skills consulted:** only the skills actually loaded.
 - **Tools and URLs:** ADK tools called and live pages fetched, or "answered from local
@@ -261,9 +206,9 @@ End every answer routed through this skill with:
 
 ## Skill update self-check
 
-The stack check covers this skill: it reports the running copy against `versions.json`. With no
-shell, fetch `https://github.com/CadenceUX/cadenceux-developer-experience-skill/raw/main/VERSION` once per session
-and, if it's newer than 2.0.0, start the answer with:
+`fmp-dev-orchestrator`'s stack check covers this skill. Without it, fetch
+`https://github.com/CadenceUX/cadenceux-developer-experience-skill/raw/main/VERSION` once per
+session and, if it's newer than 3.0.0, start the answer with:
 
 > ⚠️ **Skill update available:** this skill is v[installed]; v[latest] is at
 > https://github.com/CadenceUX/cadenceux-developer-experience-skill/releases
@@ -272,9 +217,13 @@ Skip silently if the fetch fails.
 
 ## Relationship to other skills
 
-- **Replaces `cadenceux-dx`** (and, before it, `fmp-dev-orchestrator`). If either is still
-  installed, suggest uninstalling it and keeping `cadenceux-developer-experience`: the old ones
-  carry an earlier process and would compete with this one.
+- **`fmp-dev-orchestrator`** selects the skills and checks the stack; this skill runs the work.
+  In this skill's model the Orchestrator (the Developer) chooses the skill and the thinking for
+  each stage: `fmp-dev-orchestrator` answers the "which skill" half. Install both. Routing and
+  the stack check moved there in 3.0.0; when either skill changes its routing or the decisions
+  it guides, check the other.
+- **Replaces `cadenceux-dx`.** If it's still installed, suggest uninstalling it: it carries an
+  earlier process and would compete with this one.
 - **`cadenceux-academy`** teaches people the Train Your FileMaker AI Agent class; this skill
   teaches the Agent the behaviour. This skill is the source of truth for the stages, the hats
   each stage calls and the gates (`sprints-and-hats.md`, `stage-gates.md`): the posts, the deck

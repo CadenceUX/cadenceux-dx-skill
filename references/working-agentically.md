@@ -157,4 +157,4 @@ correct fix from a plausible one. When presenting work, use the hand-back in `sp
 
 The same prompt in a different harness gives different work. A new ADK, model, skill version or
 FileMaker build is a new contractor joining the team: review its first piece of work carefully
-before trusting the second. The stack check says what changed.
+before trusting the second. fmp-dev-orchestrator's stack check says what changed.

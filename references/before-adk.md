@@ -13,7 +13,7 @@ tooling a job needs, and when upgrading is the better answer.
 
 ## Default: upgrade when you can
 
-Recommend FileMaker 26.1 or later (the stack check reports Claris's current public release) unless something stops it:
+Recommend FileMaker 26.1 or later (fmp-dev-orchestrator's stack check reports Claris's current public release) unless something stops it:
 a client's IT policy, hardware or OS below 26.1's requirements, a server that can't move to
 26.1.1 yet, or a plug-in not yet built for 26.1. The upgrade gives the agent live access to the
 file, removes several long-standing workarounds (below), and is the release Claris builds on.

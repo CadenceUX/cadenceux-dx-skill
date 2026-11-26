@@ -1,108 +1,8 @@
 {
   "skill": "cadenceux-developer-experience",
-  "version": "2.0.0",
-  "notes": "Each case is answered in a fresh subagent with the skill folder only (no evals/, maintainer/, docs/, CHANGELOG or README), text only, nothing run, ADK available, stack check taken as already run, the Skill tool not used. Graded against must / must_not. Baseline for 2.0.0: the released cadenceux-dx 1.0.2 on Sonnet. Results: evals/results-2026-11-27-v2.0.0.md.",
+  "version": "3.0.0",
+  "notes": "Each case is answered in a fresh subagent with the skill folder only (no evals/, docs/, CHANGELOG, README or plugin manifest), text only, nothing run, ADK available, stack check taken as already run, the Skill tool not used. Graded against must / must_not. Baseline for 3.0.0: the released 2.0.0 on Sonnet. Routing and stack check cases moved to fmp-dev-orchestrator's evals in 3.0.0.",
   "cases": [
-    {
-      "id": "add-field-adk",
-      "mode": "adk",
-      "prompt": "Add a Status field to the Invoice table and put it on the Invoice Detail layout.",
-      "must": [
-        "routes the change through ADK",
-        "applies the project's standards (filemaker-standards or the cadenceux pack) to the field name"
-      ],
-      "must_not": [
-        "generates fmxmlsnippet XML",
-        "routes to filemaker-field-xml or filemaker-layout-xml"
-      ]
-    },
-    {
-      "id": "bbox-python",
-      "mode": "any",
-      "prompt": "Which skill do I use to run a Python script from FileMaker with bBox?",
-      "must": [
-        "beezwax-bbox-plugin"
-      ],
-      "must_not": [
-        "says no skill covers bBox"
-      ]
-    },
-    {
-      "id": "server-otto",
-      "mode": "any",
-      "prompt": "I need FileMaker Server running in Docker on my Mac, with OttoFMS on top.",
-      "must": [
-        "cadenceux-fms-docker-setup first",
-        "then cadenceux-ottofms-docker-setup"
-      ],
-      "must_not": [
-        "routes to a skill that doesn't exist"
-      ]
-    },
-    {
-      "id": "stack-full",
-      "mode": "adk",
-      "prompt": "Is my FileMaker stack up to date?",
-      "must": [
-        "runs scripts/stack_check.py",
-        "reports skills, ADK, FileMaker Pro and the project",
-        "asks before any update or adk upgrade"
-      ],
-      "must_not": [
-        "runs adk upgrade or claude plugin update without asking"
-      ]
-    },
-    {
-      "id": "fmp-minimum",
-      "mode": "any",
-      "prompt": "What version of FileMaker do I need for ADK, and for hosted files?",
-      "must": [
-        "FileMaker Pro 26.1 or later",
-        "FileMaker Server 26.1.1 or later for hosted files"
-      ],
-      "must_not": [
-        "names an ADT preview build"
-      ]
-    },
-    {
-      "id": "chat-no-shell",
-      "mode": "chat",
-      "prompt": "(claude.ai chat, no code execution) Are my FileMaker skills up to date?",
-      "must": [
-        "fetches versions.json from the cadenceux-skills repo",
-        "compares the versions of skills loaded in the conversation",
-        "says ADK, FileMaker Pro and the project weren't checked without a shell"
-      ],
-      "must_not": [
-        "invents ADK or FileMaker Pro versions"
-      ]
-    },
-    {
-      "id": "update-everything",
-      "mode": "shell",
-      "prompt": "Update everything that's out of date in my FileMaker project.",
-      "must": [
-        "lists each proposed action first",
-        "treats adk components reconcile as changing the FileMaker file: asks specifically and suggests a backup",
-        "suggests a git commit before changing project packages"
-      ],
-      "must_not": [
-        "runs adk components reconcile without a specific yes",
-        "enters FileMaker credentials"
-      ]
-    },
-    {
-      "id": "skill-creator-route",
-      "prompt": "Which skill do I use to build a new Claude skill for my team's FileMaker conventions, and how do I install it?",
-      "must": [
-        "routes to cadenceux-skill-creator",
-        "installs it from the cadenceux marketplace (cadenceux-skill-creator@cadenceux)"
-      ],
-      "must_not": [
-        "says it's a separate install outside the marketplace",
-        "answers the skill-building question itself instead of handing off"
-      ]
-    },
     {
       "id": "old-version",
       "mode": "no-adk",
@@ -191,12 +91,12 @@
       "mode": "any",
       "prompt": "I've got cadenceux-dx installed and now there's cadenceux-developer-experience. Do I need both?",
       "must": [
-        "cadenceux-developer-experience replaces cadenceux-dx (and fmp-dev-orchestrator)",
-        "keep cadenceux-developer-experience and uninstall cadenceux-dx"
+        "cadenceux-developer-experience replaces cadenceux-dx: keep it and uninstall cadenceux-dx",
+        "fmp-dev-orchestrator is a separate skill that selects the skills and checks the stack: keep it alongside"
       ],
       "must_not": [
         "says they're the same skill published under several names",
-        "says either one is fine to keep"
+        "says fmp-dev-orchestrator is retired"
       ]
     },
     {
@@ -458,6 +358,30 @@
       ],
       "must_not": [
         "explains it in React terms only"
+      ]
+    },
+    {
+      "id": "dx-defers-routing",
+      "mode": "any",
+      "prompt": "Which skill do I use to run a Python script from FileMaker with bBox?",
+      "must": [
+        "hands skill selection to fmp-dev-orchestrator: loads it, or says to install it (claude plugin install fmp-dev-orchestrator@cadenceux) if it isn't"
+      ],
+      "must_not": [
+        "says no skill covers bBox",
+        "invents a skill name"
+      ]
+    },
+    {
+      "id": "dx-defers-stack",
+      "mode": "shell",
+      "prompt": "Is my FileMaker stack up to date?",
+      "must": [
+        "says the stack check belongs to fmp-dev-orchestrator and hands over to it, or says to install it"
+      ],
+      "must_not": [
+        "invents versions",
+        "runs a stack check script from this skill"
       ]
     }
   ],

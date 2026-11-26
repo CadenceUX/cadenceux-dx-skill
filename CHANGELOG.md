@@ -2,6 +2,31 @@
 
 Earlier entries are under the skill's previous name, cadenceux-dx.
 
+## [3.0.0] - 2026-11-27
+
+Skill selection and the stack check go back to `fmp-dev-orchestrator`, which is a separate
+skill again (4.0.0). This skill runs the work: the stages, the thinking hats, the gates before
+deploy and the decisions around the code. Major version because it no longer routes on its own.
+
+### Changed
+
+- SKILL.md: Steps 0 to 2 (stack check, is ADK available, route the task) and "Requests that
+  span skills" move to `fmp-dev-orchestrator`. A short section, "Selecting skills and checking
+  the stack", hands both over and gives the orchestrator's install line when it's missing. The
+  rule that file changes go through ADK, never clipboard XML, stays.
+- `scripts/stack_check.py` and `references/stack-check.md` move to `fmp-dev-orchestrator`.
+- The self-check fetches this repo's VERSION when the orchestrator isn't there to check it.
+- Description, README and `plugin.json`: what it directs and decides, and that it works with
+  `fmp-dev-orchestrator`. "Relationship to other skills" names the orchestrator as the skill that
+  answers the Orchestrator's "which skill" question.
+- 2.0.0 said it replaced `fmp-dev-orchestrator`. It doesn't: install both.
+- Eval cases: the routing and stack cases move to `fmp-dev-orchestrator`'s evals; new
+  `dx-defers-routing` and `dx-defers-stack`; `replaces-dx` rewritten.
+
+### Verified
+
+- Evals: see `evals/results-2026-11-27-v3.0.0.md`, against the released 2.0.0.
+
 ## [2.0.0] - 2026-11-26 (updated 2026-11-27, pre-release)
 
 Renamed to `cadenceux-developer-experience`, and the skill now directs agentic FileMaker work as

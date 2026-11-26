@@ -3,12 +3,15 @@
 A [Claude skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 for the developer experience of agentic Claris FileMaker work, with or without Claris's
 FileMaker Agentic Development Kit (ADK). It directs you and the agent through agile sprints,
-calling each stage, the thinking it needs and the gate it must pass; routes each task to the
-skill or tool that owns it; checks your stack is current; and guides the decisions around the
-code.
+calling each stage, the thinking it needs and the gate it must pass, and guides the decisions
+around the code.
 
-It replaces `cadenceux-dx` (this repo's earlier name; its 1.0.x releases are below) and, before
-it, `fmp-dev-orchestrator`: if either is installed, uninstall it.
+It works with [`fmp-dev-orchestrator`](https://github.com/CadenceUX/fmp-dev-orchestrator-skill),
+which selects the skill or tool for each task and checks your stack is current. This skill
+directs; that one selects. Install both.
+
+It replaces `cadenceux-dx` (this repo's earlier name; its 1.0.x releases are below): if that's
+still installed, uninstall it.
 
 Built and maintained by [Darrin Southern](https://www.linkedin.com/in/darrin-southern/) from [CadenceUX](https://cadenceux.com.au).
 
@@ -50,24 +53,8 @@ gates, decision records and release checklists are standard practice. A sprint a
 round the stages (not a fixed time box), needs analysis in every sprint, the Planner role, the
 Orchestrator and the hats called at each stage are CadenceUX's own.
 
-**Routes the work.** Anything that reads or changes the FileMaker file goes through ADK when
-it's available. Everything else goes to the skill that owns it:
-
-| Topic | Owner |
-|---|---|
-| Schema, scripts, layouts, value lists, custom functions, live SQL, web viewer apps, standards | Claris ADK |
-| Functions, script steps, error codes, Data API, OData, ExecuteSQL | `claris-filemaker-pro` |
-| CadenceUX conventions and patterns, client standards | `fmp-dev-design-patterns` with the [`cadenceux` pack](https://github.com/CadenceUX/cadenceux-filemaker-standards) |
-| BaseElements, MBS and bBox plug-ins | `goya-be-plugin`, `monkeybread-mbs-plugin`, `beezwax-bbox-plugin` |
-| FileMaker Server and OttoFMS in Docker | `cadenceux-fms-docker-setup`, `cadenceux-ottofms-docker-setup` |
-| Server security checks | `cadenceux-fms-security` |
-| GitHub, and scanning skills before you install them | `cadenceux-github` |
-| Building Claude skills | `cadenceux-skill-creator` |
-
-**Checks the stack**, once per session and read-only: installed CadenceUX skills, ADK against
-Claris's latest, FileMaker Pro against ADK's minimum (26.1; hosted files need FileMaker Server
-26.1.1), and your ADK project's standards pack and packages. Ask "is my FileMaker stack up to
-date?" for the full report. It never updates anything without asking.
+**Selecting skills and checking the stack** are `fmp-dev-orchestrator`'s job. This skill hands
+over to it whenever a stage needs a skill or tool, and gives its install line if it's missing.
 
 **Guides the decisions:**
 
@@ -90,7 +77,7 @@ claude plugin marketplace add https://github.com/CadenceUX/cadenceux-skills.git
 claude plugin install cadenceux-developer-experience@cadenceux
 ```
 
-If `cadenceux-dx` or `fmp-dev-orchestrator` is still installed, uninstall it: this skill replaces them.
+Install `fmp-dev-orchestrator@cadenceux` alongside it. If `cadenceux-dx` is still installed, uninstall it: this skill replaces it.
 
 **claude.ai and Cowork:** Customize → Plugins → Add marketplace from GitHub →
 `CadenceUX/cadenceux-skills`, then install **cadenceux-developer-experience**.
