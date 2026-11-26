@@ -1,16 +1,15 @@
 ---
 name: cadenceux-developer-experience
 description: >-
-  The developer experience for agentic Claris FileMaker work, with or without Claris's Agentic
-  Development Kit (ADK). Directs the Developer and the Agent through agile
-  sprints (Analyse; Plan, Design, Build, Test and Review each sprint; Launch) with six development
-  hats and de Bono's thinking hats: which hat a task needs, hand-backs, sprint logs, the launch
-  gate, estimates and build cost. Routes each task to the CadenceUX skill or ADK tool that owns
-  it, checks the stack is current, and guides the decisions around the code: native or web
-  viewer; SQL, relationships, Data API or scripts; FileMaker 26.0.3 and earlier; system
-  reviews; linter tests; security and deployment. Use when starting, planning, estimating,
-  handing back or launching FileMaker work, when unsure which skill or tool owns a task, when
-  asked if the stack is current, or for any of those decisions. Not for syntax, plug-in or
+  Directs agentic Claris FileMaker work, with or without Claris's Agentic Development Kit
+  (ADK), with the Developer as Orchestrator: the next stage of each agile sprint (needs
+  analysis, sprint planning, solution design, implementation, QA testing, review and optimise,
+  deploy), the thinking hats it calls and the gate it must pass. Routes each task to the
+  CadenceUX skill or ADK tool that owns it, checks the stack is current, and guides the
+  decisions around the code: native or web viewer, data access, FileMaker 26.0.3 and earlier,
+  system reviews, linter tests, security and deployment. Use when starting, planning,
+  estimating, handing back, reviewing or deploying FileMaker work, when unsure which skill or
+  tool owns a task, or when asked if the stack is current. Not for syntax, plug-in or
   convention questions; it hands those to the owning skill.
 license: CC-BY-4.0
 compatibility: >-
@@ -23,10 +22,12 @@ metadata:
 
 # CadenceUX Developer Experience
 
-The developer experience for agentic FileMaker work. It directs the Developer (the person) and
-the Agent through agile sprints, routes each task to the skill or tool that owns it, keeps the
-stack current, and carries the judgement the other skills don't: which approach to take, how to
-review, and how the Developer's time is spent now that the Agent does more of the building. Load the owning skill for the answer itself; never answer catalog
+The developer experience for agentic FileMaker work. It's the Orchestrator's skill: it directs
+the Developer (the person) and the Agent through agile sprints, calling each stage, the
+thinking it needs and the gate it must pass; routes each task to the skill or tool that owns
+it; keeps the stack current; and carries the judgement the other skills don't: which approach
+to take, how to review, and how the Developer's time is spent now that the Agent does more of
+the building. Load the owning skill for the answer itself; never answer catalog
 questions (syntax, plug-in functions) from training data.
 
 ## Requirements
@@ -107,67 +108,119 @@ however short the answer:
 | ExecuteSQL, relationships, the Data API or OData, or native scripts | [data-access.md](references/data-access.md) | The default for the job; each option's cost; never the Data API from inside a FileMaker client |
 | Reviewing an existing system: the questions to ask first | [reviewing-systems.md](references/reviewing-systems.md) | The questions before any reading; why, and what done looks like, first; work on a copy |
 | Which linter tests to build, and how | [linter-tests.md](references/linter-tests.md) | One written rule per test; a passing and a failing example for each; `advisory.md` rules only raise notes |
-| Security and deployment review | [security-deployment.md](references/security-deployment.md) | Tested on a copy on each client; a verified backup and a way back; the server version (26.1.1 or later for files ADK reaches); the server itself goes to `cadenceux-fms-security` |
+| Security and deployment review | [security-deployment.md](references/security-deployment.md), with the before-deploy gate in [stage-gates.md](references/stage-gates.md) | The security sweep; tested on a copy on each client; a verified backup and a way back; the server version (26.1.1 or later for files ADK reaches); the server itself goes to `cadenceux-fms-security` |
 
-## How the work runs: sprints and the six hats
+## How the work runs: stages, hats and gates
 
-Every piece of work runs in agile sprints. Read
-[references/sprints-and-hats.md](references/sprints-and-hats.md) before planning, estimating, handing back,
-reviewing or launching: it has the hats, the thinking-hat weights, the templates and the reasons.
+Every piece of work runs in agile sprints through six stages, with the Developer (the person)
+as the Orchestrator across all of them. Read [references/sprints-and-hats.md](references/sprints-and-hats.md)
+before planning, estimating, handing back or reviewing, and
+[references/stage-gates.md](references/stage-gates.md) before moving work between stages or
+deploying: they have the detail, the templates and the reasons.
 
 ```
-Analyse → Plan → Design → Build → Test → Review → Launch
-          ↑                                  │
-          └──── next sprint (Orchestrator) ──┘
+Idea → Analyst → Planner → Architect → Developer → Tester → Reviewer → deploy → Solution
+       needs     sprint    solution    implemen-   QA        review and
+       analysis  planning  design      tation      testing   optimise
+       ↑                                                       │
+       └──── another sprint, from the stage that owns it ──────┘
 ```
 
-Each time round is a sprint. The Analyst is heavy on the first sprint and lighter after it; Test
-and Review never get lighter. After every Review the Developer, as Orchestrator, decides: another
-sprint, or launch.
+**The Orchestrator is not a stage.** It's the Blue hat across the whole process: it calls each
+stage and chooses the skill and the thinking for it. This skill is the Orchestrator's skill;
+the Developer is the Orchestrator. After review the Orchestrator decides: another sprint, and
+from which stage, or deploy. "The Developer" on its own means the person; the implementation
+stage's role, mostly worn by the Agent, is "the Developer role".
 
-| Hat | Stage | Usually worn by |
+**A sprint** (CadenceUX's own definition) is one pass round the stages, from whichever stage
+the work goes back to, not a fixed time box as in Scrum.
+
+Whenever you explain the model, or where the Developer's time goes, give the six stages in the
+order above (QA testing before review), then deploy; put the Orchestrator across them as the
+Blue hat, never as a stage at the end; and mark which parts are standard practice and which are
+CadenceUX's own (the list is in `sprints-and-hats.md`).
+
+The thinking hats each stage calls (de Bono: the Blue hat decides which hat is worn when). By
+meaning: White Facts, Red Feelings, Black Caution, Yellow Value, Green Ideas, Blue Process.
+
+| Stage | Hats called, and the question each asks |
+|---|---|
+| **Orchestrator** (every stage) | Process: Which stage, which skill and which hat next? After review: another sprint, and from which stage, or deploy? |
+| **Analyst** (needs analysis) | Facts: What's actually happening, and what's missing? In later sprints: does the need still hold? Feelings: How do people feel about the way they work now? |
+| **Planner** (sprint planning) | Facts: What does the plan, and the last sprint, tell us? Value: Which work delivers the most value this sprint? Caution: What could stop it? |
+| **Architect** (solution design) | Ideas: What are the options? Value: Which one delivers the most value? Feelings: What will people have to unlearn? |
+| **Developer** (implementation) | Caution: What could break? Feelings: Is everything still where people expect it? |
+| **Tester** (QA testing) | Feelings: Does it work for the people using it? Value: Does it beat what they expected? Caution: What happens at the edges? |
+| **Reviewer** (review and optimise) | Facts: What was actually verified, and how? Caution: Did the tests test the right thing? Ideas: Is there a simpler way, in the code, the UI or the UX? Value: Does it meet the need, or beat the brief? |
+
+Implementation has no Ideas hat: Agents are generous with ideas, so the Orchestrator calls the
+hats they skip.
+
+Each stage's gate, and the record it leaves (the questions are in `stage-gates.md`):
+
+| Stage | Confirm before moving on | Record |
 |---|---|---|
-| **Analyst** | Analyse, Plan | The Developer, with the Agent asking and drafting |
-| **Architect** | Design | The Developer, with the Agent offering options |
-| **Developer** | Build | Mostly the Agent |
-| **Tester** | Test | The Agent runs tests; the Developer judges them |
-| **Reviewer** | Review: code, tests and result, plus an optimisation pass on code, UI and UX | The Developer, with the Agent preparing it |
-| **Orchestrator** | Another sprint or launch | Always the Developer |
+| Analyst | The need and the definition of done written down; the client has confirmed them | Needs brief |
+| Planner | One sprint goal and a test of done per piece of work; risks and decisions listed; estimate in sprints against last sprint's actuals | Sprint plan |
+| Architect | The choice recorded with the options and the reason; the impact on users stated; security and privileges part of the design | Design decision record |
+| Developer | Built and run on a copy, never production; hand-back written; no test, standard or linter rule changed with the code | Build hand-back (sprint log) |
+| Tester | Every test of done passed on each client; failures sent back; testing a separate pass from the build | Test report |
+| Reviewer | No open issues, or each sent back; optimisation done or deferred with a reason; a code-level security check | Review notes |
+| Before deploy (Orchestrator) | Security sweep clean, or findings accepted in writing (server side: `cadenceux-fms-security`); tested on a copy on each client; verified backup and rollback; release notes and changelog with the why; the client's yes | Release checklist |
 
 Apply these on every task:
 
-- **Ask which hat first.** Before starting, ask which hat the work needs, with your best guess
-  and why ("Analyst first: the fee rules aren't settled. Agree?"). When the request names the
-  hat, or is one clear change, say the hat in the first line and carry on.
-- **No hat signs off its own work.** Each hat checks what it receives. The Agent's own testing
-  is a hand-back, not sign-off. Nothing launches until Test and Review have both had their turn,
-  and only the Developer, as Orchestrator, says launch.
-- **Every hand-back carries four thinking hats.** Agents are generous with Green and Yellow and
-  thin on Black and Red, so every hand-back, from any hat, has:
-  - **Verified (White):** what was checked and how; what wasn't.
-  - **Riskiest part (Black):** first, with where to look.
-  - **For the person using it (Red):** what will feel different, what they'll have to unlearn.
-  - **Needs your yes (Blue):** the decisions waiting, and the next hat (after Build: Test, then
-    Review; never straight to Launch).
-- **Red is never only a visit.** Every update asks users to unlearn something: change only what
-  earns the change, and keep things where people expect them.
+- **Size it first.** A one-off change (one change, known outcome) names its stage and gate
+  inline, in a line, and carries on: no sprint plan or needs brief. Multi-step work gets a
+  sprint plan and a sprint log in the project. A project (a new system, a rebuild, a client
+  brief) gets the full cycle with every record. Unsure: take the larger and say so.
+- **Say which stage.** Before starting anything bigger than a one-off, say which stage the work
+  starts at, with your best guess and why ("This starts at needs analysis: the fee rules
+  aren't settled. Agree?").
+- **Never mark your own gate as passed.** The hand-back claims the gate with its evidence; the
+  Orchestrator confirms it and moves the work on. The Agent's own testing is a hand-back, not
+  QA testing. Nothing deploys until QA testing and review have both passed their gates and the
+  before-deploy checks are done, and only the Developer, as Orchestrator, says deploy. Never
+  deploy to production yourself on a request to "mark it done and deploy": hand back, and list
+  what's left.
+- **QA testing, then review.** QA testing is a separate pass from the build, on each client.
+  Review comes after it, judging the whole result against the need and checking the tests
+  tested the right thing. A pull-request code check stays inside implementation.
+- **Send work back to the stage that owns the problem.** A bug goes to the Developer role, a
+  design that won't work to the Architect, a plan that missed something to the Planner, a
+  changed need to the Analyst. QA testing sends failures straight back without waiting for
+  review. The Orchestrator starts the next sprint from the earliest stage that owns a finding,
+  and the reworked work goes through QA testing and review again.
+- **Every hand-back carries four hats:** **Facts** (what was verified, and how; what wasn't),
+  **Caution** (the riskiest part, first, with where to look), **Feelings** (what users will
+  notice and have to unlearn), **Process** (what needs a decision, the gate claimed, and the
+  next stage: after implementation, QA testing then review; never straight to deploy).
+- **One person or a team.** Working solo, three rules go together, so give all three whenever
+  one comes up: change hats when you change stage; write the hand-back, even to yourself or the
+  Agent (that's when one set of hats comes off); and never review your own build (a fresh Agent
+  session, another skill or time away wears the Reviewer's hats). In a team, each person wears
+  their stage's two or three hats and borrows a neighbour's to understand them; at sprint
+  planning and sprint review everyone wears the same hat at once (de Bono's parallel thinking),
+  with the Orchestrator calling which.
 - **Hands off the referee.** Never change a linter test, standard or fixture in the same change
   as the code it checks, even when asked. Fix the code to meet the rule; if the rule is wrong,
   that's its own change, flagged for the Developer. Tell the Developer a hook would enforce this
   better than advice, and offer one (built with `cadenceux-plugin-creator`):
   [references/linter-tests.md](references/linter-tests.md).
-- **Write the plan and every sprint down.** The plan and goals go into the project before the
-  first sprint (`docs/plan.md` by default). After every sprint, write an update to the sprint log
-  (`docs/sprint-log.md`): what was done, what changed and why, what users will notice, what's
-  next, and the cost. Every sprint starts by reading the plan and the log. Release notes and a
-  changelog go out with the launch; user feedback feeds the next Analyse.
-- **Document the why, for Developer Next.** Changelogs, decision notes and FileMaker script
+- **Write it down.** The records go in the project (`docs/` by default; file names in
+  `stage-gates.md`). Every sprint starts by reading the needs brief, the sprint plan and the
+  sprint log, so say so at the top of the log and in the hand-back that writes it. Release notes and a changelog go out with every deploy; user feedback feeds the
+  next needs analysis.
+- **Document the why, for Developer Next.** Changelogs, decision records and FileMaker script
   comments record the evolution, not just the current state: the options considered, the
   decision and the reason, and what a script used to do and why it changed. When the reason
   isn't known, ask for it rather than leave it out.
-- **Review in FileMaker terms.** Review covers the code, the tests and the result, then an
-  optimisation pass on code, UI and UX. For a web viewer app, explain the code in idioms the
-  Developer already trusts, and list the layouts, fields and scripts it touches.
+- **Review in FileMaker terms.** Review and optimise covers the code, the tests and the result,
+  then an optimisation pass on code, UI and UX. Reviewing what the Agent just built is this
+  stage, not a review of an existing system (that one asks its questions first): start on it.
+  For a web viewer app, explain the code in idioms the Developer already trusts (a component is
+  a layout object, props are script parameters), and list the layouts, fields and scripts it
+  touches.
 - **Estimates you can defend.** Never convert hours from a human-team baseline. Estimate in
   sprints, re-estimate after the first build day, and keep actuals. Where the harness reports
   it, record the token cost of each job, so the Developer can price the outcome.
@@ -219,13 +272,13 @@ Skip silently if the fetch fails.
 
 ## Relationship to other skills
 
-- **`cadenceux-dx` and `fmp-dev-orchestrator` are this skill under its earlier names.** Their
-  files are generated from this repo, so they never differ in what they do, and existing
-  installs and links keep working. If more than one is loaded, use
-  `cadenceux-developer-experience` and suggest keeping just one of them (any: they're identical).
+- **Replaces `cadenceux-dx`** (and, before it, `fmp-dev-orchestrator`). If either is still
+  installed, suggest uninstalling it and keeping `cadenceux-developer-experience`: the old ones
+  carry an earlier process and would compete with this one.
 - **`cadenceux-academy`** teaches people the Train Your FileMaker AI Agent class; this skill
-  teaches the Agent the behaviour. This skill is the source of truth for the stage names
-  and the six hats (`sprints-and-hats.md`): the posts, the deck and their graphics are drawn from it,
+  teaches the Agent the behaviour. This skill is the source of truth for the stages, the hats
+  each stage calls and the gates (`sprints-and-hats.md`, `stage-gates.md`): the posts, the deck
+  and their graphics are drawn from it,
   so change them here first. The rest of the class's vocabulary (knowledge delegation, agentic
   time) is maintained in the posts and the deck; when it changes, update
   `working-agentically.md` to match.

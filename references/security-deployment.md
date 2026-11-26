@@ -48,15 +48,23 @@ developer wants the full check.
 
 ## Before each deployment
 
+This is the detail behind the before-deploy gate in `stage-gates.md`: every stage gate
+confirmed (QA testing and review included), a security sweep clean or its findings accepted in
+writing, release notes and a changelog with the why, and the client's yes.
+
 1. The standards review and linter tests pass (this skill's linter-tests guide).
-2. Every critical workflow tested on a copy, on each client the users have.
-3. Plug-ins, at the versions the solution needs, installed on the server and clients.
-4. The server version: hosted files that ADK reaches need FileMaker Server 26.1.1 or later. For a
+2. The security sweep: the solution checks above (accounts, privileges, secrets, the Agent's
+   access), and the server through `cadenceux-fms-security`. Clean, or the findings accepted in
+   writing by the client.
+3. Every critical workflow tested on a copy, on each client the users have.
+4. Plug-ins, at the versions the solution needs, installed on the server and clients.
+5. The server version: hosted files that ADK reaches need FileMaker Server 26.1.1 or later. For a
    production file carrying ADK's web viewer components, confirm the server version ADK's
    release notes require.
-5. Web viewer apps built (`adk deploy`) and tested in Go and WebDirect if those are used.
-6. A backup of production taken and verified, and the time of the change agreed with users.
-7. The way back written down: what to restore, and how long it takes.
+6. Web viewer apps built (`adk deploy`) and tested in Go and WebDirect if those are used.
+7. A backup of production taken and verified, and the time of the change agreed with users.
+8. The way back written down: what to restore, and how long it takes.
+9. Release notes for users and a changelog entry, with the why; and the client's yes.
 
 If any item isn't done by the agreed time, say so plainly and recommend moving the date; a
 deployment deadline is a decision for the developer and the client, not a reason to skip a check.

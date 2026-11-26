@@ -151,10 +151,9 @@ def check_skills(versions, wanted):
     latest.update(versions.get("separate_installs", {}))
     outside = versions.get("outside_set", {})
     found = installed_skills(set(latest) | set(versions.get("retired", {})) | set(outside))
-    # "same_as": one skill published under several names (cadenceux-dx and fmp-dev-orchestrator
-    # are cadenceux-developer-experience's earlier names; each entry's same_as names the source).
-    # Only one is needed, so an earlier name is never listed as missing, the source isn't while
-    # any name is installed, and more than one installed gets a note.
+    # "same_as": one skill listed under several names in versions.json (each entry's same_as names
+    # the current one). Only one is needed, so another name is never listed as missing, the
+    # current one isn't while any name is installed, and more than one installed gets a note.
     group = {}
     for n, d in latest.items():
         if isinstance(d, dict) and d.get("same_as"):

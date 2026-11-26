@@ -1,6 +1,47 @@
 # Sprint log: cadenceux-developer-experience
 
 Newest first. Every sprint starts by reading `docs/plan.md` and this file.
+From sprint 3 the model changed; read sprint 3 and the CHANGELOG before the plan's goals.
+
+## Sprint 3, 2026-11-27: rework to the twelve-hats model (started from: needs analysis)
+
+### Build hand-back
+
+**Done:** Reworked the unshipped 2.0.0 to the model agreed for the blog post graphic: six
+stages (Analyst, Planner, Architect, Developer, Tester, Reviewer) then deploy; the Orchestrator
+as the Blue hat across them, not a stage; hats called by stage with their questions; a gate and
+a record at every stage (`references/stage-gates.md`, new); rework to the stage that owns the
+problem; the size threshold; one person or a team; standard practice and CadenceUX's own
+marked. Twins removed. Description shortened. 16 eval cases new or rewritten.
+
+**Changed, and why:**
+
+- **Hats called by stage, not weighted on every hat.** Darrin judged the lead, support and
+  visit grid missed the mark: in de Bono the Blue hat decides which hat is worn when, and the
+  first draft gave hats to roles instead.
+- **The Orchestrator is not a stage.** It runs the whole process; making it the last hat put
+  the person who decides at the end instead of across it.
+- **QA testing before review.** The Reviewer judges the whole result, including whether the
+  tests tested the right thing.
+- **Gates.** Darrin's main concern: Developers with Agents jumping from a working build to
+  deploy with no testing, optimisation or security sweep.
+- **No twins.** Darrin uninstalled `cadenceux-dx`; this skill replaces it.
+
+**Facts:** evals in fresh subagents on Haiku, Sonnet and Opus, against the released 1.0.2
+(Sonnet): see `evals/results-2026-11-27-v2.0.0.md`. Validator clean. **Not verified:** the skill
+installed and used in a real session; trigger tuning of the new description.
+
+**Caution:** the plan (`docs/plan.md`) still describes the first draft's goals; the CHANGELOG
+and the results file are the current record.
+
+**Feelings:** anyone who saw the first draft has to unlearn Launch as a stage, the weights grid
+and the Orchestrator as the last hat.
+
+**Process:** gate claimed: built on a working copy (uncommitted on `main`), hand-back written,
+no test or validator rule changed. Needs Darrin's decisions (listed in the hand-back to him).
+
+**Next:** Darrin's review, then deploy or another sprint. **Waiting on:** commit, the stray
+blog files, the git remote name.
 
 ## Sprint 2, 2026-11-26: install and Test (open: Test not finished)
 

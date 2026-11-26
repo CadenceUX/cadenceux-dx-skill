@@ -6,7 +6,7 @@ analyst's questions before the agent reads a single script.
 
 ## Contents
 - Default: ask before reading
-- The questions, by hat
+- The questions, by role
 - Then read the solution
 - Presenting findings
 - What not to do
@@ -19,7 +19,7 @@ answer them (an open development copy with ADK answers 10 and 14). If the develo
 the four yet, the first deliverable is those answers, not findings. Ask in one message, not one
 question per step.
 
-## The questions, by hat
+## The questions, by role
 
 **Analyst: why are we looking?**
 1. What prompted the review: a bug, slowness, an upgrade, a handover, a security concern, a new

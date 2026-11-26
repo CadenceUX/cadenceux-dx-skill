@@ -2,67 +2,100 @@
 
 Earlier entries are under the skill's previous name, cadenceux-dx.
 
-## [2.0.0] - 2026-11-26
+## [2.0.0] - 2026-11-26 (updated 2026-11-27, pre-release)
 
-Renamed to `cadenceux-developer-experience`, and the skill now directs the Developer and the
-Agent through agile sprints with six development hats. The stage names and hat assignments in
-`references/sprints-and-hats.md` are the source for the "Six Thinking Hats, One Developer" post and
-its graphic.
+Renamed to `cadenceux-developer-experience`, and the skill now directs agentic FileMaker work as
+the Orchestrator's skill: six stages in agile sprints, the thinking hats each stage calls, and a
+gate at every stage. 2.0.0 hadn't shipped (no tag pushed, no release, not on the marketplace),
+so the first draft of 2.0.0 was reworked in place rather than bumped. The stages, hats and gates
+in `references/sprints-and-hats.md` and `references/stage-gates.md` are the source for the "Six
+Thinking Hats, One Developer" post and its graphic.
 
 ### Changed: the name
 
 - `cadenceux-dx` becomes `cadenceux-developer-experience`: "dx" isn't widely known yet, and the
   full words say what the skill is. Major version because installs change name.
-- `cadenceux-dx` and `fmp-dev-orchestrator` stay as generated twins, so existing installs and
-  links keep working. `maintainer/build_orchestrator.py` becomes `maintainer/build_twins.py`
-  and builds either one (`cadenceux-dx` at this version, `fmp-dev-orchestrator` at the major
-  number plus 2, so 4.0.0). The description now leaves room for the line each twin adds.
-- `scripts/stack_check.py` treats `same_as` as a group: any number of names for one skill, none
-  listed as not installed while another is, and a "keep one" note naming every other installed
-  copy. `references/stack-check.md` updated to match.
+- It **replaces** `cadenceux-dx` (and, before it, `fmp-dev-orchestrator`). The generated twins
+  from the first draft are gone: `maintainer/build_twins.py`, the twin version offsets, the
+  "earlier names" note in SKILL.md and "Also published as" in `plugin.json`. SKILL.md, the README
+  and `references/stack-check.md` now say to uninstall the old names.
+- `scripts/stack_check.py` still reads `same_as` groups in `versions.json`; its comment no longer
+  names the twins.
 - Self-check and README links point to `CadenceUX/cadenceux-developer-experience-skill`.
+- The description is shorter (849 of 1,024 characters, from 953) and leads with directing the
+  process; routing and the stack check stay in it.
 
 ### Added
 
-- **`references/sprints-and-hats.md`:** sprints (Analyse; Plan, Design, Build, Test and Review in
-  sprints; Launch, with the Orchestrator deciding after every Review); the six development hats
-  (Analyst, Architect, Developer, Tester, Reviewer, Orchestrator) and who wears each; asking
-  which hat a task needs; de Bono's six thinking hats on every development hat at lead, support
-  and visit weights; the hand-back (White, Black, Red, Blue); the plan and the sprint log
-  (`docs/plan.md`, `docs/sprint-log.md`) with a template; launch (release notes, changelog,
-  feedback into the next Analyse); reviewing web viewer apps in FileMaker terms; estimates in
-  sprints with a real re-estimate case; recording token cost per job.
-- **SKILL.md, "How the work runs":** sprints, the hat table and nine rules that apply to every
-  task: ask which hat first; no hat signs off its own work; every hand-back carries four
-  thinking hats; Red is never only a visit; hands off the referee; write the plan and every
-  sprint down; document the why; review in FileMaker terms; estimates you can defend.
-- **`linter-tests.md`, "Hands off the referee":** linter tests, standards and fixtures never
-  change in the same change as the code they check; the rule change is its own change, flagged
-  for the Developer; a hook would enforce it (routed to `cadenceux-plugin-creator`, now in the
-  routing table).
-- **`working-agentically.md`, "Document the why":** changelogs, decision notes and script
-  comments record the options considered, the decision and the reason, and what a script used
-  to do and why it changed, with a script history example.
+- **The stages, in order:** Analyst (needs analysis), Planner (sprint planning), Architect
+  (solution design), Developer (implementation), Tester (QA testing), Reviewer (review and
+  optimise), then deploy. Six development roles and six thinking hats are the twelve hats.
+- **The Orchestrator is the Blue hat across the whole process, not a stage.** It calls each
+  stage and chooses the skill and the thinking for it; the Developer (the person) is the
+  Orchestrator, and this skill is the Orchestrator's skill. After review it decides: another
+  sprint, and from which stage, or deploy.
+- **QA testing before review.** The Reviewer judges the whole result against the need and
+  checks the tests tested the right thing; a pull-request code check stays inside
+  implementation.
+- **Rework goes to the stage that owns the problem:** a bug to the Developer role, a design that
+  won't work to the Architect, a plan that missed something to the Planner, a changed need to
+  the Analyst. QA testing sends failures straight back. The next sprint starts at the earliest
+  owning stage.
+- **Thinking hats called by stage**, by meaning (Facts, Feelings, Caution, Value, Ideas,
+  Process), each with the question it asks there. De Bono's rule: the Blue hat decides which
+  hat is worn when. Implementation has no Ideas hat: Agents are generous with ideas, so the
+  Orchestrator calls the hats they skip.
+- **`references/stage-gates.md`:** for each stage, what to ask, what must be true before the
+  work moves on, and the record it leaves (needs brief, sprint plan, design decision record,
+  build hand-back, test report, review notes); the before-deploy gate (security sweep clean or
+  findings accepted in writing, server side to `cadenceux-fms-security`; tested on a copy on
+  each client; verified backup and rollback; release notes and changelog with the why; the
+  client's yes) and its release checklist; default record files under `docs/`. The Agent never
+  marks its own gate as passed.
+- **A size threshold:** a one-off change names its stage and gate inline; multi-step work gets a
+  sprint plan and a sprint log; a project gets the full cycle.
+- **One person or a team:** solo, change hats when you change stage, write the hand-back even to
+  yourself, never review your own build; in a team, wear your stage's two or three hats, borrow
+  a neighbour's, and at sprint planning and review everyone wears the same hat at once.
+- **Standard practice and CadenceUX's own, marked.** Standard: de Bono's hats and parallel
+  thinking, sprint planning and review, backlog refinement, a pull-request check, Scrum's fixed
+  time box, definitions of ready and done, quality gates, decision records, test reports, code
+  review, release checklists. CadenceUX's own: the Orchestrator as Blue hat, a sprint as one
+  pass from whichever stage the work goes back to, the Planner role, needs analysis in every
+  sprint, the hats and questions per stage, a gate at every stage.
+- Kept from the first draft: hands off the referee (`linter-tests.md`), document the why
+  (`working-agentically.md`), reviewing web viewer apps in FileMaker terms, estimates in sprints
+  with a real re-estimate case, token cost per job.
+
+### Removed (from the first draft of 2.0.0)
+
+- The lead, support and visit grid of thinking hats on every development hat.
+- Launch as a stage, and the Orchestrator as the last hat. Deploy is the Orchestrator's gate.
+- The generated twins and `maintainer/` (see above).
 
 ### Changed
 
-- The four hats become six. `working-agentically.md`'s hat section now shows where the
-  Developer's time goes across all six, and points to `sprints-and-hats.md`.
-- "Relationship to other skills": this skill is the source of truth for the stage names
-  and the six hats; the posts, deck and graphics are drawn from it.
-- Eval cases: `four-hats` replaced by `six-hats`; `orchestrator-same-skill` becomes
-  `earlier-names`; nine new cases (`which-hat`, `hands-off-referee`, `sprint-update`,
-  `hand-back`, `launch-gate`, `thinking-hats`, `estimate`, `script-why`, `webviewer-review`)
-  and a near-miss for de Bono outside FileMaker.
+- `working-agentically.md`: where the Developer's time goes, by stage; hand-backs use Facts,
+  Caution, Feelings, Process.
+- `security-deployment.md`: the before-deployment list now includes the security sweep, release
+  notes with the why and the client's yes, and points to the before-deploy gate.
+- `reviewing-systems.md`: "the questions, by hat" becomes "by role".
+- Eval cases: 16 new or rewritten for this model (`replaces-dx`, `twelve-hats`, `which-stage`,
+  `hats-per-stage`, `architect-stage`, `deploy-gate`, `agent-own-gate`, `hand-back`,
+  `rework-routing`, `qa-sends-back`, `sprint-update`, `size-one-off`, `size-multi-step`,
+  `solo-review`, `team-hats`, `standard-or-ours`); `earlier-names`, `six-hats`, `which-hat`,
+  `launch-gate` and `thinking-hats` removed.
 
 ### Verified
 
-- Evals: see `evals/results-2026-11-26-v2.0.0.md`. Baselines (released cadenceux-dx 1.0.2 and
-  no skill, Sonnet) scored 0 of 10 on the new cases.
-- `scripts/stack_check.py`'s group logic tested with faked installs (none, the source only, a
-  twin only, two names, all three).
-- `maintainer/build_twins.py` run for both twins into scratch git checkouts.
-- `validate_skill.py` clean.
+- Evals: `evals/results-2026-11-27-v2.0.0.md`. On the 16 new and rewritten cases the released
+  cadenceux-dx 1.0.2 (Sonnet) passed none in full (7 partly); the reworked 2.0.0 passed 16 of 16
+  on Sonnet and Opus and 13 of 16 on Haiku (2 partly, 1 borderline fail), after five fixes from
+  the first run (stage order and the Blue hat; reading the log first; the three solo rules
+  together; the standard practice behind the gates listed in place; reviewing the Agent's build
+  versus reviewing an existing system). Seven regression cases pass on Haiku and Sonnet.
+- Not tested: near-miss and trigger tuning of the new description, use in a real session.
+- `validate_skill.py` (cadenceux-skill-creator 2.4.3) clean.
 
 ## [1.0.2] — 2026-11-24
 

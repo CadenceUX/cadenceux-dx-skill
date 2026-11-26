@@ -2,39 +2,53 @@
 
 A [Claude skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 for the developer experience of agentic Claris FileMaker work, with or without Claris's
-FileMaker Agentic Development Kit (ADK). It directs you and the agent through agile sprints with
-six development hats, routes each task to the skill or tool that owns it, checks your stack is
-current, and guides the decisions around the code.
+FileMaker Agentic Development Kit (ADK). It directs you and the agent through agile sprints,
+calling each stage, the thinking it needs and the gate it must pass; routes each task to the
+skill or tool that owns it; checks your stack is current; and guides the decisions around the
+code.
 
-Also published under its earlier names, [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill)
-and [`fmp-dev-orchestrator`](https://github.com/CadenceUX/fmp-dev-orchestrator-skill): the same
-skill, built from this repo. Install one, not more.
+It replaces [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill) (and, before it,
+`fmp-dev-orchestrator`): if either is installed, uninstall it.
 
 Built and maintained by [Darrin Southern](https://www.linkedin.com/in/darrin-southern/) from [CadenceUX](https://cadenceux.com.au).
 
 ## What it does
 
-**Runs the work in agile sprints.** Analyse on the way in; then Plan, Design, Build, Test and
-Review as a sprint, as many times as it takes; then Launch. After every Review, you decide:
-another sprint, or launch.
+**Runs the work in agile sprints, with you as the Orchestrator.** Six stages, then deploy:
 
-| Hat | Stage | Usually worn by |
+| Role | Stage | Thinking hats called |
 |---|---|---|
-| Analyst | Analyse, Plan | You, with the agent asking and drafting |
-| Architect | Design | You, with the agent offering options |
-| Developer | Build | Mostly the agent |
-| Tester | Test | The agent runs tests; you judge them |
-| Reviewer | Review: code, tests, result, and an optimisation pass on code, UI and UX | You, with the agent preparing it |
-| Orchestrator | Another sprint or launch | Always you |
+| Analyst | Needs analysis | Facts, Feelings |
+| Planner | Sprint planning | Facts, Value, Caution |
+| Architect | Solution design | Ideas, Value, Feelings |
+| Developer | Implementation (mostly the agent) | Caution, Feelings |
+| Tester | QA testing | Feelings, Value, Caution |
+| Reviewer | Review and optimise: the code, the tests, the UI and UX, against the need | Facts, Caution, Ideas, Value |
 
-The agent asks which hat a task needs before it starts. No hat signs off its own work, and
-nothing launches until Test and Review have both had their turn. Every hand-back uses de Bono's
-thinking hats: what was verified and how (White), the riskiest part first (Black), how it will
-feel to the people using it (Red), and what needs your yes (Blue). The agent writes the plan
-down before the first sprint and a sprint update after every one, never changes a linter test
-alongside the code it checks, records the why behind each change for Developer Next, estimates
-in sprints rather than hours from a human-team baseline, and records the token cost of each job
-where the harness reports it.
+The Orchestrator isn't a stage: it's the Blue hat (Process) across the whole process, calling
+each stage and choosing the skill and the thinking for it. That's you, and this skill is your
+skill. After review you decide: another sprint, starting from the stage that owns the problem
+(a bug, a design that won't work, a plan that missed something, a changed need), or deploy.
+Six development roles plus de Bono's six thinking hats make the twelve hats.
+
+**Gates at every stage.** Each stage has questions to ask, things that must be true before the
+work moves on, and a record it leaves (needs brief, sprint plan, design decision record, build
+hand-back, test report, review notes). Before deploy: a security sweep, testing on a copy on
+each client, a verified backup and rollback, release notes with the why, and the client's yes.
+The agent never marks its own gate as passed, so it can't jump from a working build straight
+to production.
+
+**Sized to the job.** A one-off change names its stage and gate in a line. Multi-step work gets
+a sprint plan and a sprint log. A project gets the full cycle.
+
+**One person or a team.** On your own: change hats when you change stage, write the hand-back
+even to yourself, and never review your own build. In a team: wear your stage's hats, borrow a
+neighbour's, and at sprint planning and review everyone wears the same hat at once.
+
+**Says what's standard and what isn't.** De Bono's hats, sprint planning and review, quality
+gates, decision records and release checklists are standard practice. A sprint as one pass
+round the stages (not a fixed time box), needs analysis in every sprint, the Planner role, the
+Orchestrator and the hats called at each stage are CadenceUX's own.
 
 **Routes the work.** Anything that reads or changes the FileMaker file goes through ADK when
 it's available. Everything else goes to the skill that owns it:
@@ -76,7 +90,7 @@ claude plugin marketplace add https://github.com/CadenceUX/cadenceux-skills.git
 claude plugin install cadenceux-developer-experience@cadenceux
 ```
 
-If `cadenceux-dx` or `fmp-dev-orchestrator` is also installed, keep one: they're the same skill.
+If `cadenceux-dx` or `fmp-dev-orchestrator` is still installed, uninstall it: this skill replaces them.
 
 **claude.ai and Cowork:** Customize → Plugins → Add marketplace from GitHub →
 `CadenceUX/cadenceux-skills`, then install **cadenceux-developer-experience**.

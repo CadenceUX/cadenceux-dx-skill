@@ -3,12 +3,13 @@
 How the agent should run a piece of FileMaker work, and why. The vocabulary comes from Darrin
 Southern's posts on cadenceux.com.au (FileMaker Knowledge Delegation, Agentic Time Traveller,
 Context Engineer Position Title, Six Thinking Hats, One Developer) and the Train Your
-FileMaker AI Agent talk. Sprints, the six hats and the hand-back are in `sprints-and-hats.md`.
+FileMaker AI Agent talk. The stages, the thinking hats and the hand-back are in
+`sprints-and-hats.md`; the gates are in `stage-gates.md`.
 
 ## Contents
 - Knowledge delegation
 - Agentic time
-- Where the Developer's time goes: six hats
+- Where the Developer's time goes: the stages
 - Briefs: context is the currency
 - Documentation in agentic time
 - Document the why
@@ -61,28 +62,29 @@ Work as a manager of decisions, not effort:
 - With several agents or sessions in parallel, keep one picture of where each stands, so the
   developer can switch to any thread and arrive briefed.
 
-## Where the Developer's time goes: six hats
+## Where the Developer's time goes: the stages
 
-Every FileMaker project still needs the four hats from Agentic Time Traveller (**Analyst,
-Architect, Developer, Tester**), and agentic work adds two: the **Reviewer** and the
-**Orchestrator**. They run in sprints: Analyse on the way in; then Plan, Design, Build, Test and
-Review in each sprint, as many sprints as it takes; then Launch, with the Orchestrator deciding
-after every Review whether to run another sprint. What's changed is where the Developer's time goes:
+Every FileMaker project still needs the four roles from Agentic Time Traveller (**Analyst,
+Architect, Developer, Tester**). Agentic work adds the **Planner** and the **Reviewer**, and
+the Developer (the person) wears the Blue hat across all of them as the **Orchestrator**: not
+a stage, but the one who calls each stage and decides, after review, whether to run another
+sprint (and from which stage) or deploy. What's changed is where the Developer's time goes, stage by stage in order:
 
-| Hat | Where the time goes now |
+| Stage | Where the time goes now |
 |---|---|
-| **Analyst** | The most, on the first sprint: the need, the people, what success looks like |
-| **Architect** | The next most: the system design, schema, where logic lives, how it's deployed |
-| **Developer** | The thinnest: the Agent does most of the build |
-| **Tester** | Real time, every sprint: QA, edge cases, the exceptions that prove the rule |
-| **Reviewer** | Real time, every sprint: the code, the tests and the result, then an optimisation pass |
-| **Orchestrator** | Short but decisive: after every Review, another sprint or launch |
+| **Analyst** (needs analysis) | The most, on the first sprint: the need, the people, what success looks like |
+| **Planner** (sprint planning) | Short and every sprint: one goal, a test of done for each piece, the risks |
+| **Architect** (solution design) | Real time: the options, the schema, where logic lives, security, what users will unlearn |
+| **Developer** (implementation) | The thinnest: the Agent does most of the build |
+| **Tester** (QA testing) | Real time, every sprint: each client, the edges, the exceptions that prove the rule |
+| **Reviewer** (review and optimise) | Real time, every sprint: the whole result against the need, then the optimisation pass |
+| **Orchestrator** (the Blue hat, across every stage) | Short but decisive: which stage next, which gate is really met; after review, another sprint (from the stage that owns the problem) or deploy |
 
-So the Agent asks which hat a task needs before starting, pulls the conversation towards the
-Analyst and Architect (the need and the design before building), and leaves room for the Tester
-and Reviewer (it proposes how to test what it built, and never signs off its own work). The
-years of experience count in knowing what the solution should look like and do, not in typing
-it.
+So the Agent says which stage a task starts at, pulls the conversation towards needs analysis
+and solution design (the need and the design before building), and leaves room for QA testing
+and review (it proposes how to test what it built, and never marks its own gate as passed).
+The years of experience count in knowing what the solution should look like and do, not in
+typing it.
 
 ## Briefs: context is the currency
 
@@ -145,10 +147,11 @@ history comment:
 
 Reviewing the Agent's work is the new code review. The skill that doesn't expire is telling a
 correct fix from a plausible one. When presenting work, use the hand-back in `sprints-and-hats.md`
-(verified, riskiest part, how it will feel to use, what needs a yes), and:
+(Facts, Caution, Feelings, Process), and:
 
 - Prompt once, read twice: re-read the result against the brief before reporting done.
-- Never sign off your own work: the next hat checks it.
+- Never mark your own gate as passed: the Orchestrator confirms it, and the next stage checks
+  the work.
 
 ## When the harness changes
 

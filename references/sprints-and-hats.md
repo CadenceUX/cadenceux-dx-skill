@@ -1,171 +1,214 @@
-# Sprints and the six hats
+# Sprints and the twelve hats
 
 How the Developer and the Agent run a piece of FileMaker work together, and why. The stage
-names and hat assignments here are the source for Darrin Southern's posts (Agentic Time
-Traveller, Six Thinking Hats, One Developer) and the Train Your FileMaker AI Agent class.
+names, the hats called at each stage and the questions they ask are the source for Darrin
+Southern's posts (Agentic Time Traveller, Six Thinking Hats, One Developer) and the Train Your
+FileMaker AI Agent class. The gates each stage must pass are in `stage-gates.md`.
 
 ## Contents
-- Sprints
-- The six development hats
-- Asking which hat
-- Thinking hats on every development hat
+- Words used here
+- The stages
+- The Orchestrator
+- Sprints, and sending work back
+- Asking which stage
+- The thinking hats each stage calls
 - The hand-back
-- The plan and the sprint log
-- Launch
+- One person or a team
+- What's standard practice and what's CadenceUX's own
 - Reviewing in FileMaker terms
 - Estimates you can defend
 - The cost of the build
 
-## Sprints
+## Words used here
+
+- **The Developer** on its own is the person. The person is the Orchestrator.
+- **The Developer role** is the implementation stage's role, mostly worn by the Agent.
+- **The twelve hats:** six development roles (Analyst, Planner, Architect, Developer, Tester,
+  Reviewer) and de Bono's six thinking hats.
+- **Thinking hats, by meaning:** White **Facts**, Red **Feelings**, Black **Caution**, Yellow
+  **Value**, Green **Ideas**, Blue **Process**.
+- **A sprint:** one pass round the stages, from whichever stage the work goes back to.
+- **A gate:** what must be true before work leaves a stage. **A record:** what the stage leaves
+  behind.
+
+## The stages
 
 ```
-Analyse → Plan → Design → Build → Test → Review → Launch
-          ↑                                  │
-          └──── next sprint (Orchestrator) ──┘
+Idea → Analyst → Planner → Architect → Developer → Tester → Reviewer → deploy → Solution
+       needs     sprint    solution    implemen-   QA        review and
+       analysis  planning  design      tation      testing   optimise
+       ↑                                                       │
+       └──── another sprint, from the stage that owns it ──────┘
 ```
 
-- **Analyse** comes first, on the way in: the need, the people who use it, what done looks like.
-- **Plan, Design, Build, Test, Review** repeat. Each time round is a sprint.
-- **After every Review** the Developer, wearing the Orchestrator hat, decides: another sprint,
-  or launch. The Agent recommends, with its evidence; it never makes this call.
-- **The Analyst is heavy on the first sprint** (the need, the plan, the goals) and lighter after
-  it (checking the plan still holds and folding in what the last sprint taught).
-- **Test and Review never get lighter.** The Agent builds more each sprint, so there is more to
-  check, not less.
-- **After Launch,** user feedback goes into the next Analyse.
+| Role | Stage | What it does | Usually worn by |
+|---|---|---|---|
+| **Analyst** | Needs analysis | The need, the people, what done looks like; in later sprints, whether the need still holds | The Developer, with the Agent asking and drafting |
+| **Planner** | Sprint planning | One sprint goal, the work in and out, a test of done for each piece, risks, the estimate | The Developer, with the Agent drafting |
+| **Architect** | Solution design | The options and their costs; schema, where logic lives, native or web viewer; security and privileges; what users will have to unlearn | The Developer decides; the Agent offers options |
+| **Developer** | Implementation | Makes the change on a copy, with a pull-request code check inside the build where there's a repo | Mostly the Agent |
+| **Tester** | QA testing | Tests every test of done, on each client, with real-looking data, as a separate pass from the build | The Agent runs tests; the Developer judges whether they're enough |
+| **Reviewer** | Review and optimise | Judges the whole result against the need: the code, the tests, the UI and the UX; checks the tests tested the right thing; optimises | The Developer, with the Agent preparing it from a fresh context |
+
+**QA testing comes before review.** The Reviewer judges the whole result, and part of that is
+checking the tests tested the right thing; it can't do that before the tests exist. A
+pull-request code check is not this review: it stays inside implementation.
+
+## The Orchestrator
+
+The Orchestrator is not a stage. It is the Blue hat across the whole process: it calls each
+stage, and chooses the skill and the thinking for it. This skill is the Orchestrator's skill,
+and the Developer (the person) is the Orchestrator.
+
+- It decides which stage runs next, which skill or tool owns the work there, and which
+  thinking hats the stage calls.
+- It moves work from one stage to the next once the stage's gate is confirmed in the
+  hand-back.
+- After review it decides: **another sprint, and from which stage, or deploy.**
+- The Agent recommends, with its evidence. It never makes these calls and never marks its own
+  gate as passed.
+
+## Sprints, and sending work back
+
+A sprint is one pass round the stages. It starts from whichever stage the work goes back to,
+not always from the top, and it isn't a fixed time box.
+
+**Any stage can send work back to the stage that owns the problem.** QA testing doesn't wait
+for review: a failed test goes straight back. After review, the Orchestrator starts the next
+sprint from the stage that owns what was found:
+
+| What was found | Goes back to |
+|---|---|
+| A bug: the build doesn't do what the design says | **Developer** (implementation) |
+| A design that won't work: too slow, can't handle a case, the wrong place for the logic | **Architect** (solution design) |
+| A plan that missed something: a layout, a report, a client, a dependency | **Planner** (sprint planning) |
+| The need changed: the client wants something different, or new facts | **Analyst** (needs analysis) |
+
+When findings belong to several stages, the sprint starts at the earliest of them, so a
+changed need is settled before the design or the code is redone. Whatever it starts from,
+the reworked work goes through QA testing and review again before deploy.
+
+Needs analysis is the first stage of every sprint, on the way round: in later sprints it's
+short, asking whether the need still holds and folding in what the last sprint taught.
 
 Why sprints: the Agent makes building cheap, so the risk moves to building the wrong thing, or
 shipping something nobody checked. Short sprints with a decision at the end of each keep the
 Developer in charge of direction while the Agent does the volume.
 
-## The six development hats
+## Asking which stage
 
-The four hats from Agentic Time Traveller (Analyst, Architect, Developer, Tester), plus the
-Reviewer and the Orchestrator.
-
-| Hat | Stage | What it does | Who wears it |
-|---|---|---|---|
-| **Analyst** | Analyse, Plan | The need, the people, what done looks like; the plan and goals for each sprint | The Developer leads; the Agent asks and drafts |
-| **Architect** | Design | Schema, where logic lives, native or web viewer, deployment; designs for what users will have to unlearn | The Developer decides; the Agent offers options with their costs |
-| **Developer** | Build | Makes the change | Mostly the Agent |
-| **Tester** | Test | Checks the build against the plan's definition of done: edge cases, each client, real-looking data | The Agent runs tests; the Developer judges whether they're enough |
-| **Reviewer** | Review | Reviews the code, the tests and the result, then an optimisation pass on code, UI and UX | The Developer, with the Agent preparing it from a fresh context |
-| **Orchestrator** | After each Review | Decides another sprint or launch; owns scope and the launch date | Always the Developer |
-
-Two rules hold every sprint together:
-
-- **No hat signs off its own work.** Each hat checks what it receives: the Tester checks the
-  build, the Reviewer checks the build and the tests, the Orchestrator checks the review. When
-  the Agent has built something, its own "it works" is a hand-back, not a test result. If the
-  Agent also wears the Tester hat, it runs Test as a separate pass that starts from the plan, not
-  from its memory of building, in a fresh session or subagent where the harness allows.
-- **Nothing launches until Test and Review have both had their turn.** A keen client, a deadline
-  or the Agent's confidence doesn't change that; it changes how small the sprint should be.
-
-## Asking which hat
-
-Before starting, ask which hat the work needs. Give a best guess and the reason, so the
+Before starting, say which stage the work starts at. Give a best guess and the reason, so the
 Developer can answer in a word:
 
-> This needs the Analyst first: whether the fee compounds, and from which date, isn't settled
-> yet. Start there, or is that decided and it's straight to Build?
+> This starts at needs analysis: whether the fee compounds, and from which date, isn't settled
+> yet. Start there, or is that decided and it's straight to implementation?
 
-Signals: no definition of done means Analyst. A settled need with an open design (where it
-lives, which tables) means Architect. A clear spec means Build. "Is it right?" means Tester or
-Reviewer. "Can we ship it?" is the Orchestrator, which is the Developer's call; bring the
-evidence.
+Signals: no definition of done means needs analysis. A settled need with no sprint goal means
+sprint planning. A plan with an open design (where it lives, which tables) means solution
+design. A clear spec means implementation. "Does it work?" means QA testing. "Is it right?"
+means review. "Can we ship it?" is the Orchestrator's call: bring the evidence from each gate.
 
-When the request names the hat, or is one clear change with a known outcome, say the hat in
-the first line ("Build: one field and one layout change") and carry on.
+## The thinking hats each stage calls
 
-## Thinking hats on every development hat
+De Bono's rule: the Blue hat decides which hat is worn when. So the Orchestrator calls the
+hats each stage needs, and each hat earns its place by the question it asks there:
 
-Edward de Bono's six thinking hats: **White** (facts: what we know and how), **Red** (feelings:
-how it will feel to use), **Black** (caution: what could go wrong), **Yellow** (benefits: what
-it gains), **Green** (ideas: other ways to do it), **Blue** (process: what's decided, what's
-next). Every development hat uses all six, at different weights:
+| Stage | Hats called, and the question each asks |
+|---|---|
+| **Orchestrator** (every stage) | **Process:** Which stage, which skill and which hat next? After review: another sprint, and from which stage, or deploy? |
+| **Analyst** (needs analysis) | **Facts:** What's actually happening, and what's missing? In later sprints: does the need still hold? **Feelings:** How do people feel about the way they work now? |
+| **Planner** (sprint planning) | **Facts:** What does the plan, and the last sprint, tell us? **Value:** Which work delivers the most value this sprint? **Caution:** What could stop it? |
+| **Architect** (solution design) | **Ideas:** What are the options? **Value:** Which one delivers the most value? **Feelings:** What will people have to unlearn? |
+| **Developer** (implementation) | **Caution:** What could break? **Feelings:** Is everything still where people expect it? |
+| **Tester** (QA testing) | **Feelings:** Does it work for the people using it? **Value:** Does it beat what they expected? **Caution:** What happens at the edges? |
+| **Reviewer** (review and optimise) | **Facts:** What was actually verified, and how? **Caution:** Did the tests test the right thing? **Ideas:** Is there a simpler way, in the code, the UI or the UX? **Value:** Does it meet the need, or beat the brief? |
 
-- **Lead:** the main way of thinking for that hat.
-- **Support:** always present.
-- **Visit:** checked on purpose, briefly.
+**Implementation has no Ideas hat.** Agents are generous with ideas, so the Orchestrator calls
+the hats they skip: Caution and Feelings. Ideas belong in solution design, where the options
+are weighed, and in review, where a simpler way can be found.
 
-| Development hat | Lead | Support | Visit |
-|---|---|---|---|
-| Analyst | White, Blue | Red, Green | Black, Yellow |
-| Architect | Green, Black | Red, White | Yellow, Blue |
-| Developer | White, Green | Black, Red | Yellow, Blue |
-| Tester | Black, White | Red, Green | Yellow, Blue |
-| Reviewer | Black, Red | White, Green | Yellow, Blue |
-| Orchestrator | Blue, Yellow | White, Black, Red | Green |
-
-**Agents are generous with Green and Yellow** (options, and what's good about them) **and thin
-on Black and Red** (what could go wrong, and how it will feel to use). Correct for it: keep
-Green and Yellow visits short, and never skip Black or Red.
-
-**Red is never only a visit.** Every update asks users to unlearn something. The Architect and
-the Developer design and build for that:
-
-- Change only what earns the change.
-- Keep things where people expect them: same layout, same button position, same names.
-- When something must move or go, say where it went and why, in the release notes and, for a
-  while, on the screen itself.
+**Feelings is called at four stages.** Every update asks users to unlearn something. Change
+only what earns the change; keep things where people expect them (same layout, same button
+position, same names); when something must move or go, say where it went and why, in the
+release notes and, for a while, on the screen itself.
 
 ## The hand-back
 
-Every hand-back, from any hat, carries four of the thinking hats, in this order:
+Every hand-back to the Orchestrator, from any stage, carries four hats, in this order:
 
-1. **Verified (White):** what was checked and how (evaluated on the engine, read back from the
-   file, run on which test data, on which clients), and what wasn't.
-2. **Riskiest part (Black):** first, before the good news, with where to look.
-3. **For the person using it (Red):** what will feel different, what they'll have to unlearn,
-   what stays where it was.
-4. **Needs your yes (Blue):** the decisions waiting on the Developer, and the next hat. After a
-   build that's Test, then Review; never straight to Launch.
+1. **Facts:** what was verified, and how (evaluated on the engine, read back from the file,
+   run on which test data, on which clients), and what wasn't.
+2. **Caution:** the riskiest part, first, before the good news, with where to look.
+3. **Feelings:** what users will notice: what will feel different, what they'll have to
+   unlearn, what stays where it was.
+4. **Process:** what needs a decision, the gate this stage claims and its evidence, and the
+   next stage. After implementation that's QA testing, then review; never straight to deploy.
 
-Green and Yellow can follow if they add something. Keep the whole thing short enough to read
-before acting on it.
+Ideas and Value can follow if they add something. Keep the whole thing short enough to read
+before acting on it. The hand-back is where one stage's hats come off: the Agent claims the
+gate; the Orchestrator confirms it.
 
-## The plan and the sprint log
+## One person or a team
 
-**Before the first sprint,** write the plan and goals into the project. Default: `docs/plan.md`,
-unless the project already has a place for it. It holds the need, the goals and what done
-looks like, what's out of scope, the decisions made so far, and the first estimate.
+**One person** (the Developer and the Agent):
 
-**After every sprint,** the Agent writes an update to the sprint log. Default:
-`docs/sprint-log.md`, newest first:
+- Change hats when you change stage: the table above says which to put on.
+- Write the hand-back, even to yourself or the Agent. That's the moment one set of hats comes
+  off.
+- Never review your own build. A fresh Agent session, another skill, or time away wears the
+  Reviewer's hats. The same goes for the Agent: if it built the change, QA testing and review
+  run as separate passes that start from the plan, not from its memory of building, in a
+  fresh session or subagent where the harness allows.
 
-```markdown
-## Sprint 3, 2026-11-26: bookings screen
+**A team:**
 
-**Done:** what was built, tested and reviewed this sprint.
-**Changed, and why:** each change with its reason, and the options considered where there was
-a choice.
-**For users:** what they'll notice, and what they have to unlearn.
-**Verified:** how, and on what. **Not verified:** what wasn't, plainly.
-**Next:** the next sprint's goal. **Waiting on:** decisions that need the Developer's yes.
-**Cost:** tokens and time where the harness reports them; this sprint's estimate against actual.
-```
+- Wear your stage's two or three hats, and leave the rest to the people whose stage needs
+  them. A business analyst wears the Analyst's; developers the Developer role's; a tester the
+  Tester's.
+- Borrow a neighbour's hat to understand them. The hats stages share, such as Feelings, are
+  the bridges between roles.
+- At sprint planning and sprint review, everyone wears the same hat at the same time (de
+  Bono's parallel thinking), and the Orchestrator calls which: all Facts, then all Caution,
+  rather than one person defending while another attacks.
 
-**The next sprint reads the plan and the sprint log first,** before any other file. That's how
-a fresh session, a helper agent or Developer Next picks up where the last one stopped. Where a
-fact is missing (why a button was dropped, what the logs covered), write what's known, mark the
-gap, and ask; never invent the reason.
+## What's standard practice and what's CadenceUX's own
 
-## Launch
+Say which is which when explaining the model, so nobody mistakes CadenceUX's choices for Scrum.
 
-Launch only on the Orchestrator's word, after Test and Review. With the launch:
+**Standard practice:**
 
-- **Release notes** for users: what's new, what moved, what's gone and why.
-- **A changelog entry** for developers.
-- The deployment checks: a verified backup, a way back, tested on a copy on each client.
+- De Bono's six thinking hats, with the Blue hat running the thinking; parallel thinking in a
+  group.
+- Agile sprints: sprint planning, QA testing, sprint review, then deploy or another sprint.
+- Backlog refinement before each sprint.
+- A pull-request code check inside the build.
+- In Scrum, a sprint is a fixed time box: rework found in testing or review is done inside it,
+  until the work meets the definition of done. An optimisation is a change of its own, rerun
+  against the same tests.
+- The gates draw on standard practice: a definition of ready and a definition of done, quality
+  gates between stages, architecture decision records, test reports, code review, and a
+  security review and release checklist before production, with a verified backup and a way
+  back.
 
-After launch, collect what users say and do. It feeds the next Analyse.
+**CadenceUX's own:**
+
+- The Orchestrator as the Blue hat across the whole process, choosing the skill and the
+  thinking for each stage, worn by the Developer.
+- A sprint is one pass round the stages, from whichever stage the work goes back to, not a
+  fixed time box.
+- A Planner role.
+- Needs analysis as the first stage of every sprint.
+- Review and optimise after QA testing, judging the code, the tests, the UI and the UX against
+  the need.
+- The hats called at each stage, and the question each asks there.
+- A gate at every stage, which the Agent never marks as passed itself.
 
 ## Reviewing in FileMaker terms
 
-The Reviewer covers the code, the tests and the result, then an optimisation pass on all three
-of code (simpler, fewer calls, nothing duplicated), UI (consistent with the rest of the
-solution) and UX (fewer steps, nothing moved without a reason).
+The Reviewer judges the code, the tests and the result against the need, then optimises code
+(simpler, fewer calls, nothing duplicated), UI (consistent with the rest of the solution) and
+UX (fewer steps, nothing moved without a reason). An optimisation is its own change, rerun
+against the same tests; or it's deferred with a reason.
 
 For a web viewer app, the Developer trusts FileMaker, not React. Explain the code in the
 idioms they already know:
@@ -193,12 +236,13 @@ name exists in the file.
 
 - **No hours from a human-team baseline.** The Agent changes which parts take the time, so
   scaling a team's hours by a guessed factor gives a number nobody can defend.
-- **Estimate in sprints:** how many to reach the plan's definition of done, and what each one
+- **Estimate in sprints:** how many to reach the definition of done, and what each one
   delivers.
 - **Re-estimate after the first build day,** from what that day actually delivered.
-- **Keep actuals,** sprint by sprint, beside the estimate in the sprint log.
-- **Say what doesn't shrink:** Analyse, Test, Review, waiting for decisions, training and
-  handover.
+- **Keep actuals,** sprint by sprint, beside the estimate in the sprint log, and plan each
+  sprint against the last sprint's actuals.
+- **Say what doesn't shrink:** needs analysis, QA testing, review, waiting for decisions,
+  training and handover.
 
 A real case: a CadenceUX project with an Agent-assisted estimate of 1,200 hours was
 re-estimated at 120 hours after two build days, and may finish at half of that. The first
