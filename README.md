@@ -1,16 +1,40 @@
-# cadenceux-dx
+# cadenceux-developer-experience
 
 A [Claude skill](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 for the developer experience of agentic Claris FileMaker work, with or without Claris's
-FileMaker Agentic Development Kit (ADK). It routes each task to the skill or tool that owns it,
-checks your stack is current, and guides the decisions around the code.
+FileMaker Agentic Development Kit (ADK). It directs you and the agent through agile sprints with
+six development hats, routes each task to the skill or tool that owns it, checks your stack is
+current, and guides the decisions around the code.
 
-Also published as [`fmp-dev-orchestrator`](https://github.com/CadenceUX/fmp-dev-orchestrator-skill),
-its earlier name: the same skill, built from this repo. Install one, not both.
+Also published under its earlier names, [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill)
+and [`fmp-dev-orchestrator`](https://github.com/CadenceUX/fmp-dev-orchestrator-skill): the same
+skill, built from this repo. Install one, not more.
 
 Built and maintained by [Darrin Southern](https://www.linkedin.com/in/darrin-southern/) from [CadenceUX](https://cadenceux.com.au).
 
 ## What it does
+
+**Runs the work in agile sprints.** Analyse on the way in; then Plan, Design, Build, Test and
+Review as a sprint, as many times as it takes; then Launch. After every Review, you decide:
+another sprint, or launch.
+
+| Hat | Stage | Usually worn by |
+|---|---|---|
+| Analyst | Analyse, Plan | You, with the agent asking and drafting |
+| Architect | Design | You, with the agent offering options |
+| Developer | Build | Mostly the agent |
+| Tester | Test | The agent runs tests; you judge them |
+| Reviewer | Review: code, tests, result, and an optimisation pass on code, UI and UX | You, with the agent preparing it |
+| Orchestrator | Another sprint or launch | Always you |
+
+The agent asks which hat a task needs before it starts. No hat signs off its own work, and
+nothing launches until Test and Review have both had their turn. Every hand-back uses de Bono's
+thinking hats: what was verified and how (White), the riskiest part first (Black), how it will
+feel to the people using it (Red), and what needs your yes (Blue). The agent writes the plan
+down before the first sprint and a sprint update after every one, never changes a linter test
+alongside the code it checks, records the why behind each change for Developer Next, estimates
+in sprints rather than hours from a human-team baseline, and records the token cost of each job
+where the harness reports it.
 
 **Routes the work.** Anything that reads or changes the FileMaker file goes through ADK when
 it's available. Everything else goes to the skill that owns it:
@@ -40,9 +64,8 @@ date?" for the full report. It never updates anything without asking.
 - Which linter tests to build
 - Security and deployment review
 
-**And how the work runs:** knowledge delegation, agentic time, the four hats (analyst,
-architect, developer, tester), briefing helper agents, and reviewing again when the harness
-changes.
+**And the habits underneath:** knowledge delegation, agentic time, briefing helper agents,
+and reviewing again when the harness changes.
 
 ## Install
 
@@ -50,21 +73,21 @@ changes.
 
 ```bash
 claude plugin marketplace add https://github.com/CadenceUX/cadenceux-skills.git
-claude plugin install cadenceux-dx@cadenceux
+claude plugin install cadenceux-developer-experience@cadenceux
 ```
 
-If `fmp-dev-orchestrator` is also installed, keep one: they're the same skill.
+If `cadenceux-dx` or `fmp-dev-orchestrator` is also installed, keep one: they're the same skill.
 
 **claude.ai and Cowork:** Customize → Plugins → Add marketplace from GitHub →
-`CadenceUX/cadenceux-skills`, then install **cadenceux-dx**.
+`CadenceUX/cadenceux-skills`, then install **cadenceux-developer-experience**.
 
-**Claude desktop app (macOS):** download [`cadenceux-dx.skill`](https://github.com/CadenceUX/cadenceux-dx-skill/releases/latest/download/cadenceux-dx.skill) and
+**Claude desktop app (macOS):** download [`cadenceux-developer-experience.skill`](https://github.com/CadenceUX/cadenceux-developer-experience-skill/releases/latest/download/cadenceux-developer-experience.skill) and
 double-click it.
 
 **Claude.ai in a browser, as a single skill:** Customize → Skills → upload
-[`cadenceux-dx.zip`](https://github.com/CadenceUX/cadenceux-dx-skill/releases/latest/download/cadenceux-dx.zip).
+[`cadenceux-developer-experience.zip`](https://github.com/CadenceUX/cadenceux-developer-experience-skill/releases/latest/download/cadenceux-developer-experience.zip).
 
-> Both files are attached to the latest [release](https://github.com/CadenceUX/cadenceux-dx-skill/releases).
+> Both files are attached to the latest [release](https://github.com/CadenceUX/cadenceux-developer-experience-skill/releases).
 > Don't use GitHub's green **Code → Download ZIP** button or a release's **Source code (zip)**:
 > those are snapshots of the repository, not a packaged skill, and Claude won't install them
 > as one.

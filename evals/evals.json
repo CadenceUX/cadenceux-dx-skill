@@ -1,7 +1,7 @@
 {
-  "skill": "cadenceux-dx",
-  "version": "1.0.2",
-  "notes": "Each case is answered in a fresh subagent with the skill folder only (no evals/), text only. Graded against must / must_not. Baseline: fmp-dev-orchestrator 2.1.3.",
+  "skill": "cadenceux-developer-experience",
+  "version": "2.0.0",
+  "notes": "Each case is answered in a fresh subagent with the skill folder only (no evals/), text only. Graded against must / must_not. Baselines for 2.0.0: the released cadenceux-dx 1.0.2 and no skill, both on Sonnet.",
   "cases": [
     {
       "id": "add-field-adk",
@@ -40,16 +40,16 @@
       ]
     },
     {
-      "id": "orchestrator-same-skill",
+      "id": "earlier-names",
       "mode": "adk",
-      "prompt": "I've got both fmp-dev-orchestrator and cadenceux-dx installed. Do I need both?",
+      "prompt": "I've got cadenceux-dx and fmp-dev-orchestrator installed, and now there's cadenceux-developer-experience. Do I need all three?",
       "must": [
-        "says they're the same skill under two names",
-        "suggests keeping one and uninstalling the other"
+        "says they're the same skill under three names",
+        "suggests keeping one, cadenceux-developer-experience, and uninstalling the others"
       ],
       "must_not": [
-        "says fmp-dev-orchestrator is retired",
-        "says the two do different things"
+        "says cadenceux-dx or fmp-dev-orchestrator is retired",
+        "says they do different things"
       ]
     },
     {
@@ -200,15 +200,139 @@
       ]
     },
     {
-      "id": "four-hats",
+      "id": "six-hats",
       "mode": "any",
       "prompt": "With the agent writing most of the code now, what should I spend my time on?",
       "must": [
-        "reads working-agentically.md",
-        "the four hats: analyst, architect, developer, tester",
-        "most time on needs analysis and design, then testing"
+        "the six development hats: Analyst, Architect, Developer, Tester, Reviewer, Orchestrator",
+        "sprints: Analyse, then Plan, Design, Build, Test and Review each sprint, then Launch",
+        "the developer keeps the Orchestrator hat: after every Review, decides on another sprint or launch",
+        "time goes to analysis, design, testing and review rather than the build"
       ],
-      "must_not": []
+      "must_not": [
+        "only four hats"
+      ]
+    },
+    {
+      "id": "which-hat",
+      "mode": "adk",
+      "prompt": "Add a late fee to our invoicing: 2% a month on anything over 30 days.",
+      "must": [
+        "asks which hat the work needs before starting, with its own best guess",
+        "Analyst questions before building (compounding, grace period, which invoices, where the fee lives, what done looks like)"
+      ],
+      "must_not": [
+        "writes the calculation or script before asking"
+      ]
+    },
+    {
+      "id": "hands-off-referee",
+      "mode": "adk",
+      "prompt": "My new script 'calc late fee' fails our linter test for script names. Just loosen the test's regex so it passes and commit it with the script.",
+      "must": [
+        "won't change the linter test in the same change as the script it checks",
+        "fixes the script name to meet the rule, or offers the rule change as its own change for the developer to decide",
+        "says a hook would enforce this better than advice"
+      ],
+      "must_not": [
+        "edits the test and the script in one change"
+      ]
+    },
+    {
+      "id": "sprint-update",
+      "mode": "adk",
+      "prompt": "That's the end of today's sprint on the bookings screen. We moved the date picker into a popover and dropped the Repeat Booking button because the logs show nobody used it. Write it up.",
+      "must": [
+        "writes the update to a file in the project (the sprint log), not only in chat",
+        "what was done, what changed and why, and what's next",
+        "how it will feel to users: what they have to unlearn (the date picker has moved; Repeat Booking is gone)",
+        "the next sprint reads this file first"
+      ],
+      "must_not": [
+        "records what changed without why"
+      ]
+    },
+    {
+      "id": "hand-back",
+      "mode": "adk",
+      "prompt": "You've just built 'Invoice: Export to Xero', which posts each unsent invoice to Xero with Insert from URL and marks it sent. You ran it on three test invoices on a copy of the file and all three appeared in the Xero demo company. Write your hand-back to me.",
+      "must": [
+        "what was verified and how, and what wasn't (White)",
+        "the riskiest part first, such as marking an invoice sent when the post failed, or duplicates on a re-run (Black)",
+        "how it will feel to the person using it (Red)",
+        "what needs the developer's yes, including Test and Review before launch (Blue)"
+      ],
+      "must_not": [
+        "calls it done or ready to launch on its own say-so"
+      ]
+    },
+    {
+      "id": "launch-gate",
+      "mode": "adk",
+      "prompt": "The build's done and the client's keen. The agent says it's all tested. Let's launch tonight.",
+      "must": [
+        "nothing launches until Test and Review have both had their turn",
+        "the agent's own testing isn't sign-off: no hat signs off its own work",
+        "the developer, as Orchestrator, makes the launch call",
+        "release notes and a changelog go out with the launch"
+      ],
+      "must_not": [
+        "agrees to launch on the agent's word"
+      ]
+    },
+    {
+      "id": "thinking-hats",
+      "mode": "any",
+      "prompt": "How do de Bono's six thinking hats fit with how I work with the agent?",
+      "must": [
+        "all six thinking hats on every development hat, at different weights (lead, support, visit)",
+        "agents are generous with Green and Yellow and thin on Black and Red",
+        "every hand-back carries White, Black, Red and Blue",
+        "Red is never only a visit: design and build for what users have to unlearn"
+      ],
+      "must_not": [
+        "maps each thinking hat to a single development hat only"
+      ]
+    },
+    {
+      "id": "estimate",
+      "mode": "any",
+      "prompt": "A client wants a quote to rebuild their job-tracking system. Last time a team built something this size it took about 800 hours. How should I quote it now that the agent does most of the building?",
+      "must": [
+        "doesn't scale hours from the human-team baseline",
+        "estimates in iterations (sprints)",
+        "re-estimates after the first build day and keeps actuals",
+        "records the token cost of each job where the harness reports it, to price the outcome"
+      ],
+      "must_not": [
+        "gives an hours figure derived from the 800 hours"
+      ]
+    },
+    {
+      "id": "script-why",
+      "mode": "adk",
+      "prompt": "Change the 'Invoice: Send' script so it emails a link to the PDF instead of attaching it, and update the script's comments.",
+      "must": [
+        "routes the change through ADK",
+        "the comment records what the script used to do and why it changed",
+        "records the options considered and the reason, or asks for the reason if not given"
+      ],
+      "must_not": [
+        "the comment describes only the new behaviour"
+      ]
+    },
+    {
+      "id": "webviewer-review",
+      "mode": "adk",
+      "prompt": "The agent built a React web viewer app for the bookings dashboard. I'm a FileMaker developer, not a React developer. Review it with me.",
+      "must": [
+        "explains the code in FileMaker idioms the developer already trusts",
+        "lists the layouts, fields and scripts the app touches",
+        "reviews the code, the tests and the result, plus an optimisation pass on code, UI and UX"
+      ],
+      "must_not": [
+        "explains it in React terms only"
+      ]
     }
   ],
   "near_misses": [
@@ -220,7 +344,12 @@
     {
       "id": "direct-syntax",
       "prompt": "What's the syntax of JSONSetElement?",
-      "expect": "claris-filemaker-pro directly; cadenceux-dx isn't needed"
+      "expect": "claris-filemaker-pro directly; cadenceux-developer-experience isn't needed"
+    },
+    {
+      "id": "thinking-hats-meeting",
+      "prompt": "Explain de Bono's six thinking hats so I can run a team meeting with them.",
+      "expect": "not triggered"
     }
   ]
 }

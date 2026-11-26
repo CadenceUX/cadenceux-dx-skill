@@ -9,6 +9,7 @@ what failed rather than from reading everything.
 - What's worth a test
 - Where the tests run
 - Writing one
+- Hands off the referee
 - Keeping them honest
 
 ## Default: one rule, one test, from a written standard
@@ -53,6 +54,27 @@ relationship is the right design, whether a comment is true.
 3. Make the message say what failed, where, and what the rule wants: "Script `Find Staff`
    (folder Staff): name isn't `Domain: Action` (naming.md, Scripts)".
 4. Allow named exceptions (a list in the project), never silent skips.
+
+## Hands off the referee
+
+Linter tests, standards and test fixtures are the referee. **They never change in the same
+change as the code they check,** however small the change and even when the Developer asks
+for both together. A test loosened alongside the code that failed it proves nothing: the
+change passes because the rule moved, and the history no longer shows the rule was broken.
+
+When a check fails:
+
+1. **Fix the code to meet the rule.** For a script name, rename the script to the written
+   convention (for example `Invoice: Calculate Late Fee`) and update what calls it.
+2. **If the rule itself is wrong,** say so and offer the rule change as its own change: the
+   written standard first, then the test, each with a passing and a failing example, flagged
+   for the Developer to approve. Only after that lands does the code change go in against it.
+3. **One script that shouldn't follow the rule** goes on the project's named exceptions list,
+   also as its own change.
+
+Advice bends under pressure ("just loosen it, it's late"). A hook that blocks any change
+touching both the tests (or standards, or fixtures) and the code they check enforces this
+properly: suggest one, and route building it to `cadenceux-plugin-creator`.
 
 ## Keeping them honest
 

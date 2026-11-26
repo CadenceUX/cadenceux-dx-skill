@@ -1,4 +1,68 @@
-# cadenceux-dx — Changelog
+# cadenceux-developer-experience: Changelog
+
+Earlier entries are under the skill's previous name, cadenceux-dx.
+
+## [2.0.0] - 2026-11-26
+
+Renamed to `cadenceux-developer-experience`, and the skill now directs the Developer and the
+Agent through agile sprints with six development hats. The stage names and hat assignments in
+`references/sprints-and-hats.md` are the source for the "Six Thinking Hats, One Developer" post and
+its graphic.
+
+### Changed: the name
+
+- `cadenceux-dx` becomes `cadenceux-developer-experience`: "dx" isn't widely known yet, and the
+  full words say what the skill is. Major version because installs change name.
+- `cadenceux-dx` and `fmp-dev-orchestrator` stay as generated twins, so existing installs and
+  links keep working. `maintainer/build_orchestrator.py` becomes `maintainer/build_twins.py`
+  and builds either one (`cadenceux-dx` at this version, `fmp-dev-orchestrator` at the major
+  number plus 2, so 4.0.0). The description now leaves room for the line each twin adds.
+- `scripts/stack_check.py` treats `same_as` as a group: any number of names for one skill, none
+  listed as not installed while another is, and a "keep one" note naming every other installed
+  copy. `references/stack-check.md` updated to match.
+- Self-check and README links point to `CadenceUX/cadenceux-developer-experience-skill`.
+
+### Added
+
+- **`references/sprints-and-hats.md`:** sprints (Analyse; Plan, Design, Build, Test and Review in
+  sprints; Launch, with the Orchestrator deciding after every Review); the six development hats
+  (Analyst, Architect, Developer, Tester, Reviewer, Orchestrator) and who wears each; asking
+  which hat a task needs; de Bono's six thinking hats on every development hat at lead, support
+  and visit weights; the hand-back (White, Black, Red, Blue); the plan and the sprint log
+  (`docs/plan.md`, `docs/sprint-log.md`) with a template; launch (release notes, changelog,
+  feedback into the next Analyse); reviewing web viewer apps in FileMaker terms; estimates in
+  sprints with a real re-estimate case; recording token cost per job.
+- **SKILL.md, "How the work runs":** sprints, the hat table and nine rules that apply to every
+  task: ask which hat first; no hat signs off its own work; every hand-back carries four
+  thinking hats; Red is never only a visit; hands off the referee; write the plan and every
+  sprint down; document the why; review in FileMaker terms; estimates you can defend.
+- **`linter-tests.md`, "Hands off the referee":** linter tests, standards and fixtures never
+  change in the same change as the code they check; the rule change is its own change, flagged
+  for the Developer; a hook would enforce it (routed to `cadenceux-plugin-creator`, now in the
+  routing table).
+- **`working-agentically.md`, "Document the why":** changelogs, decision notes and script
+  comments record the options considered, the decision and the reason, and what a script used
+  to do and why it changed, with a script history example.
+
+### Changed
+
+- The four hats become six. `working-agentically.md`'s hat section now shows where the
+  Developer's time goes across all six, and points to `sprints-and-hats.md`.
+- "Relationship to other skills": this skill is the source of truth for the stage names
+  and the six hats; the posts, deck and graphics are drawn from it.
+- Eval cases: `four-hats` replaced by `six-hats`; `orchestrator-same-skill` becomes
+  `earlier-names`; nine new cases (`which-hat`, `hands-off-referee`, `sprint-update`,
+  `hand-back`, `launch-gate`, `thinking-hats`, `estimate`, `script-why`, `webviewer-review`)
+  and a near-miss for de Bono outside FileMaker.
+
+### Verified
+
+- Evals: see `evals/results-2026-11-26-v2.0.0.md`. Baselines (released cadenceux-dx 1.0.2 and
+  no skill, Sonnet) scored 0 of 10 on the new cases.
+- `scripts/stack_check.py`'s group logic tested with faked installs (none, the source only, a
+  twin only, two names, all three).
+- `maintainer/build_twins.py` run for both twins into scratch git checkouts.
+- `validate_skill.py` clean.
 
 ## [1.0.2] — 2026-11-24
 

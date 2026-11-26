@@ -2,14 +2,16 @@
 
 How the agent should run a piece of FileMaker work, and why. The vocabulary comes from Darrin
 Southern's posts on cadenceux.com.au (FileMaker Knowledge Delegation, Agentic Time Traveller,
-Context Engineer Position Title) and the Train Your FileMaker AI Agent talk.
+Context Engineer Position Title, Six Thinking Hats, One Developer) and the Train Your
+FileMaker AI Agent talk. Sprints, the six hats and the hand-back are in `sprints-and-hats.md`.
 
 ## Contents
 - Knowledge delegation
 - Agentic time
-- The four hats
+- Where the Developer's time goes: six hats
 - Briefs: context is the currency
 - Documentation in agentic time
+- Document the why
 - Reviewing the agent
 - When the harness changes
 
@@ -59,22 +61,28 @@ Work as a manager of decisions, not effort:
 - With several agents or sessions in parallel, keep one picture of where each stands, so the
   developer can switch to any thread and arrive briefed.
 
-## The four hats
+## Where the Developer's time goes: six hats
 
-Every FileMaker project still needs four hats: **analyst, architect, developer and tester**.
-What's changed is where the developer's time goes:
+Every FileMaker project still needs the four hats from Agentic Time Traveller (**Analyst,
+Architect, Developer, Tester**), and agentic work adds two: the **Reviewer** and the
+**Orchestrator**. They run in sprints: Analyse on the way in; then Plan, Design, Build, Test and
+Review in each sprint, as many sprints as it takes; then Launch, with the Orchestrator deciding
+after every Review whether to run another sprint. What's changed is where the Developer's time goes:
 
 | Hat | Where the time goes now |
 |---|---|
-| **Analyst** | The most time: the needs analysis, the stakeholders, what success looks like |
+| **Analyst** | The most, on the first sprint: the need, the people, what success looks like |
 | **Architect** | The next most: the system design, schema, where logic lives, how it's deployed |
-| **Developer** | The thinnest: the agent writes more of the code |
-| **Tester** | Real time: QA, edge cases, the exceptions that prove the rule |
+| **Developer** | The thinnest: the Agent does most of the build |
+| **Tester** | Real time, every sprint: QA, edge cases, the exceptions that prove the rule |
+| **Reviewer** | Real time, every sprint: the code, the tests and the result, then an optimisation pass |
+| **Orchestrator** | Short but decisive: after every Review, another sprint or launch |
 
-So the agent should pull the conversation towards the analyst and architect hats (ask about
-the need and the design before building) and leave room for the tester hat (propose how to test
-what it built). The years of experience count in knowing what the solution should look like and
-do, not in typing it.
+So the Agent asks which hat a task needs before starting, pulls the conversation towards the
+Analyst and Architect (the need and the design before building), and leaves room for the Tester
+and Reviewer (it proposes how to test what it built, and never signs off its own work). The
+years of experience count in knowing what the solution should look like and do, not in typing
+it.
 
 ## Briefs: context is the currency
 
@@ -109,15 +117,38 @@ FileMaker 26.1's field display names, annotations and custom function descriptio
 knowledge inside the file, where it can't drift away; they're also the context the next agent
 reads.
 
+## Document the why
+
+Developer Next wasn't in the room. The current state of a script or schema shows what it does;
+only the record of how it got there shows why, and why is what stops the next person undoing a
+decision that was made for a reason. So changelogs, decision notes and script comments record
+the evolution:
+
+- **The options considered,** the decision, and the reason for it.
+- **What it used to do, and why it changed.** A script comment that describes only the new
+  behaviour loses the one fact Developer Next needs when a user asks for the old one back.
+- **Who decided, and when,** where it matters.
+
+When the reason isn't known, ask the Developer for it; don't invent one or leave the line out.
+The comment format comes from the project's standards (`filemaker-standards`, the `cadenceux`
+pack through `fmp-dev-design-patterns`); this sets what goes in it. For example, in a script's
+history comment:
+
+```
+2026-11-26  Was: attached the invoice PDF to the email.
+            Now: emails a link to the PDF instead.
+            Why: [the Developer's reason]. Considered: keeping the attachment
+            ([why not]); a link from cloud storage (chosen).
+```
+
 ## Reviewing the agent
 
-Reviewing the agent's work is the new code review. The skill that doesn't expire is telling a
-correct fix from a plausible one. When presenting work:
+Reviewing the Agent's work is the new code review. The skill that doesn't expire is telling a
+correct fix from a plausible one. When presenting work, use the hand-back in `sprints-and-hats.md`
+(verified, riskiest part, how it will feel to use, what needs a yes), and:
 
-- Say what was verified and how (engine-evaluated, read back from the file, tested on data), and
-  what wasn't.
-- Point to the riskiest part first.
 - Prompt once, read twice: re-read the result against the brief before reporting done.
+- Never sign off your own work: the next hat checks it.
 
 ## When the harness changes
 

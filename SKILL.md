@@ -1,31 +1,32 @@
 ---
-name: cadenceux-dx
+name: cadenceux-developer-experience
 description: >-
-  The developer experience for agentic Claris FileMaker work, with or without Claris's
-  FileMaker Agentic Development Kit (ADK). Routes each task to the CadenceUX skill or ADK tool
-  that owns it, checks the stack is current (skills, ADK, FileMaker Pro and Server, the ADK
-  project), and guides the decisions around the code: native layouts, web viewer apps or
-  hybrid; SQL, relationships, Data API or scripts; what FileMaker 26.0.3 and earlier need;
-  reviewing an existing system; linter tests; security and deployment. Teaches how agentic
-  work runs: knowledge delegation, agentic time, the four hats, briefs and review. Use when
-  starting FileMaker work, when unsure which skill or tool owns a task, when a request spans
-  several, when asked whether the stack is up to date, or for any of those decisions. Not for
-  answering syntax, plug-in or convention questions itself; it hands those to the owning skill.
+  The developer experience for agentic Claris FileMaker work, with or without Claris's Agentic
+  Development Kit (ADK). Directs the Developer and the Agent through agile
+  sprints (Analyse; Plan, Design, Build, Test and Review each sprint; Launch) with six development
+  hats and de Bono's thinking hats: which hat a task needs, hand-backs, sprint logs, the launch
+  gate, estimates and build cost. Routes each task to the CadenceUX skill or ADK tool that owns
+  it, checks the stack is current, and guides the decisions around the code: native or web
+  viewer; SQL, relationships, Data API or scripts; FileMaker 26.0.3 and earlier; system
+  reviews; linter tests; security and deployment. Use when starting, planning, estimating,
+  handing back or launching FileMaker work, when unsure which skill or tool owns a task, when
+  asked if the stack is current, or for any of those decisions. Not for syntax, plug-in or
+  convention questions; it hands those to the owning skill.
 license: CC-BY-4.0
 compatibility: >-
   Claude.ai, Claude Desktop, Cowork and Claude Code, and any harness that reads skills. The
   full stack check needs Python 3 and a shell; without one it checks skill versions only.
 metadata:
   author: Darrin Southern, CadenceUX
-  version: "1.0.2"
+  version: "2.0.0"
 ---
 
-# CadenceUX DX
+# CadenceUX Developer Experience
 
-The developer experience for agentic FileMaker work. It routes each task to the skill or tool
-that owns it, keeps the stack current, and carries the judgement the other skills don't: which
-approach to take, how to review, and how the developer's time is spent now that the agent does
-more of the building. Load the owning skill for the answer itself; never answer catalog
+The developer experience for agentic FileMaker work. It directs the Developer (the person) and
+the Agent through agile sprints, routes each task to the skill or tool that owns it, keeps the
+stack current, and carries the judgement the other skills don't: which approach to take, how to
+review, and how the Developer's time is spent now that the Agent does more of the building. Load the owning skill for the answer itself; never answer catalog
 questions (syntax, plug-in functions) from training data.
 
 ## Requirements
@@ -80,6 +81,7 @@ any harness: Claude Code, Cursor, Codex, Gemini CLI); or `adk --version` runs.
 | Security check of a FileMaker Server: exposure, CVEs, accounts, logs, backups | **`cadenceux-fms-security`** |
 | GitHub: publishing skills, known attacks on accounts and repos, scanning skills before install | **`cadenceux-github`** |
 | Building or updating a Claude skill | **`cadenceux-skill-creator`** |
+| A hook or plugin that enforces a rule (such as hands off the referee) | **`cadenceux-plugin-creator`** |
 | Is the stack current | **This skill**, Step 0 |
 | Which approach to take, how to review, how to work (below) | **This skill** |
 | FileMaker Server administration beyond these, Admin API, Claris Connect, Claris Studio | No dedicated skill: fetch the live guide from `https://help.claris.com/` |
@@ -107,20 +109,79 @@ however short the answer:
 | Which linter tests to build, and how | [linter-tests.md](references/linter-tests.md) | One written rule per test; a passing and a failing example for each; `advisory.md` rules only raise notes |
 | Security and deployment review | [security-deployment.md](references/security-deployment.md) | Tested on a copy on each client; a verified backup and a way back; the server version (26.1.1 or later for files ADK reaches); the server itself goes to `cadenceux-fms-security` |
 
-## How the work runs
+## How the work runs: sprints and the six hats
 
-Apply these on every task; [references/working-agentically.md](references/working-agentically.md)
-has the detail and the reasons.
+Every piece of work runs in agile sprints. Read
+[references/sprints-and-hats.md](references/sprints-and-hats.md) before planning, estimating, handing back,
+reviewing or launching: it has the hats, the thinking-hat weights, the templates and the reasons.
+
+```
+Analyse → Plan → Design → Build → Test → Review → Launch
+          ↑                                  │
+          └──── next sprint (Orchestrator) ──┘
+```
+
+Each time round is a sprint. The Analyst is heavy on the first sprint and lighter after it; Test
+and Review never get lighter. After every Review the Developer, as Orchestrator, decides: another
+sprint, or launch.
+
+| Hat | Stage | Usually worn by |
+|---|---|---|
+| **Analyst** | Analyse, Plan | The Developer, with the Agent asking and drafting |
+| **Architect** | Design | The Developer, with the Agent offering options |
+| **Developer** | Build | Mostly the Agent |
+| **Tester** | Test | The Agent runs tests; the Developer judges them |
+| **Reviewer** | Review: code, tests and result, plus an optimisation pass on code, UI and UX | The Developer, with the Agent preparing it |
+| **Orchestrator** | Another sprint or launch | Always the Developer |
+
+Apply these on every task:
+
+- **Ask which hat first.** Before starting, ask which hat the work needs, with your best guess
+  and why ("Analyst first: the fee rules aren't settled. Agree?"). When the request names the
+  hat, or is one clear change, say the hat in the first line and carry on.
+- **No hat signs off its own work.** Each hat checks what it receives. The Agent's own testing
+  is a hand-back, not sign-off. Nothing launches until Test and Review have both had their turn,
+  and only the Developer, as Orchestrator, says launch.
+- **Every hand-back carries four thinking hats.** Agents are generous with Green and Yellow and
+  thin on Black and Red, so every hand-back, from any hat, has:
+  - **Verified (White):** what was checked and how; what wasn't.
+  - **Riskiest part (Black):** first, with where to look.
+  - **For the person using it (Red):** what will feel different, what they'll have to unlearn.
+  - **Needs your yes (Blue):** the decisions waiting, and the next hat (after Build: Test, then
+    Review; never straight to Launch).
+- **Red is never only a visit.** Every update asks users to unlearn something: change only what
+  earns the change, and keep things where people expect them.
+- **Hands off the referee.** Never change a linter test, standard or fixture in the same change
+  as the code it checks, even when asked. Fix the code to meet the rule; if the rule is wrong,
+  that's its own change, flagged for the Developer. Tell the Developer a hook would enforce this
+  better than advice, and offer one (built with `cadenceux-plugin-creator`):
+  [references/linter-tests.md](references/linter-tests.md).
+- **Write the plan and every sprint down.** The plan and goals go into the project before the
+  first sprint (`docs/plan.md` by default). After every sprint, write an update to the sprint log
+  (`docs/sprint-log.md`): what was done, what changed and why, what users will notice, what's
+  next, and the cost. Every sprint starts by reading the plan and the log. Release notes and a
+  changelog go out with the launch; user feedback feeds the next Analyse.
+- **Document the why, for Developer Next.** Changelogs, decision notes and FileMaker script
+  comments record the evolution, not just the current state: the options considered, the
+  decision and the reason, and what a script used to do and why it changed. When the reason
+  isn't known, ask for it rather than leave it out.
+- **Review in FileMaker terms.** Review covers the code, the tests and the result, then an
+  optimisation pass on code, UI and UX. For a web viewer app, explain the code in idioms the
+  Developer already trusts, and list the layouts, fields and scripts it touches.
+- **Estimates you can defend.** Never convert hours from a human-team baseline. Estimate in
+  sprints, re-estimate after the first build day, and keep actuals. Where the harness reports
+  it, record the token cost of each job, so the Developer can price the outcome.
+
+And the habits underneath the sprints ([references/working-agentically.md](references/working-agentically.md)
+has the detail and the reasons):
 
 - **Delegate the perishable, keep the durable.** Exact flags, error strings, versions and option
   names change every release: check them against the live system or the owning skill every time.
   Expected is not verified.
-- **Every output is a draft** until the developer has reviewed it, kept somewhere reversible (a
+- **Every output is a draft** until the Developer has reviewed it, kept somewhere reversible (a
   copy of the file, a branch, an unpublished post). Development stays off the production server.
-- **Decisions are the critical path.** List what needs the developer's yes and ask early, in one
+- **Decisions are the critical path.** List what needs the Developer's yes and ask early, in one
   place, rather than one question per step.
-- **The four hats:** analyst, architect, developer and tester. The agent now wears most of the
-  developer hat; spend the conversation on needs, design and testing.
 - **Brief like a context engineer.** Any helper agent or session gets the need, the constraints
   and what done looks like.
 - **Review again when the harness changes.** A new ADK, model or skill version is a new
@@ -148,23 +209,25 @@ End every answer routed through this skill with:
 ## Skill update self-check
 
 The stack check covers this skill: it reports the running copy against `versions.json`. With no
-shell, fetch `https://github.com/CadenceUX/cadenceux-dx-skill/raw/main/VERSION` once per session
-and, if it's newer than 1.0.2, start the answer with:
+shell, fetch `https://github.com/CadenceUX/cadenceux-developer-experience-skill/raw/main/VERSION` once per session
+and, if it's newer than 2.0.0, start the answer with:
 
 > ⚠️ **Skill update available:** this skill is v[installed]; v[latest] is at
-> https://github.com/CadenceUX/cadenceux-dx-skill/releases
+> https://github.com/CadenceUX/cadenceux-developer-experience-skill/releases
 
 Skip silently if the fetch fails.
 
 ## Relationship to other skills
 
-- **`fmp-dev-orchestrator` is this skill under its earlier name.** Its files are generated from
-  this repo, so the two never differ in what they do, and existing orchestrator installs and
-  links keep working. If both are loaded, use `cadenceux-dx` and suggest uninstalling one of
-  them (either: they're identical).
+- **`cadenceux-dx` and `fmp-dev-orchestrator` are this skill under its earlier names.** Their
+  files are generated from this repo, so they never differ in what they do, and existing
+  installs and links keep working. If more than one is loaded, use
+  `cadenceux-developer-experience` and suggest keeping just one of them (any: they're identical).
 - **`cadenceux-academy`** teaches people the Train Your FileMaker AI Agent class; this skill
-  teaches the agent the behaviour. The class's vocabulary (knowledge delegation, agentic time,
-  the four hats) is maintained in the posts and the deck; when they change, update
+  teaches the Agent the behaviour. This skill is the source of truth for the stage names
+  and the six hats (`sprints-and-hats.md`): the posts, the deck and their graphics are drawn from it,
+  so change them here first. The rest of the class's vocabulary (knowledge delegation, agentic
+  time) is maintained in the posts and the deck; when it changes, update
   `working-agentically.md` to match.
 - Every routed skill owns its own answers. When this skill and an owning skill disagree, the
   owning skill wins for its topic.
