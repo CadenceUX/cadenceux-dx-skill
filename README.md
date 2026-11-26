@@ -7,8 +7,8 @@ calling each stage, the thinking it needs and the gate it must pass; routes each
 skill or tool that owns it; checks your stack is current; and guides the decisions around the
 code.
 
-It replaces [`cadenceux-dx`](https://github.com/CadenceUX/cadenceux-dx-skill) (and, before it,
-`fmp-dev-orchestrator`): if either is installed, uninstall it.
+It replaces `cadenceux-dx` (this repo's earlier name; its 1.0.x releases are below) and, before
+it, `fmp-dev-orchestrator`: if either is installed, uninstall it.
 
 Built and maintained by [Darrin Southern](https://www.linkedin.com/in/darrin-southern/) from [CadenceUX](https://cadenceux.com.au).
 
